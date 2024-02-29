@@ -46,10 +46,11 @@ public class ExpenseController {
         return expenseRepository.findByUserEmail(email);
     }
 
+    // Retrieve expenses by date
     @GetMapping("/user/expensesByDate")
     public Collection<Expense> getExpensesByEmailAndDate(
-        @RequestParam String email,
-        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime expense_date) {
+            @RequestParam String email,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime expense_date) {
 
         // Find the user by email
         User user = userRepository.findByEmail(email);
