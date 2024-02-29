@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.capstone.expense.dto.SalaryRequest;
 import com.example.capstone.expense.model.User;
 import com.example.capstone.expense.repository.UserRepository;
 import com.example.capstone.expense.security.PasswordHashing;
@@ -69,6 +70,26 @@ public class UserController {
 
         // Authentication successful
         return ResponseEntity.ok("Login successful");
+    }
+
+    // Adding salary method
+    @PostMapping("/user/addSalary")
+    public ResponseEntity<String> addSalary(@RequestBody SalaryRequest salaryRequest) {
+        // Retrieve the user by email
+        User user = userRepository.findByEmail(salaryRequest.getEmail());
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        // Add the salary to the user's balance
+        BigDecimal currentBalance = user.getBalance();
+        BigDecimal newBalance = currentBalance.add(salaryRequest.getAmount());
+        user.setBalance(newBalance);
+
+        // Save the updated user balance
+        userRepository.save(user);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Salary added successfully");
     }
 
 }
