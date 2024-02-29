@@ -65,6 +65,15 @@ public class ExpenseController {
         return expenseRepository.findByUserAndExpenseDate(user, expense_date);
     }
 
+    // Retrieve user's expenses by DateRange 
+    @GetMapping("/user/expensesByDateRange")
+    Collection<Expense> getExpensesByDateRange(
+            @RequestParam String email,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+        return expenseRepository.findByUserEmailAndExpenseDateBetween(email, startDate, endDate);
+    }
+
     // Add expense to a user  
     @PostMapping("/user/expenses")
     public ResponseEntity<String> addExpense(@RequestBody ExpenseRequest expenseRequest) {

@@ -50,8 +50,8 @@ public class AuthController {
     
     //Retrieve expenses by date range
     @GetMapping("/admin/expensesByDateRange")
-    Collection<Expense> getExpensesByDateRange(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-                                           @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+    Collection<Expense> getExpensesByDateRange(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+                                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
         return expenseRepository.findByExpenseDateBetween(startDate, endDate);
     }
 
