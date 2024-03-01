@@ -9,6 +9,8 @@ import java.util.Collections;
 // import java.util.Date;
 // import java.time.LocalDate;
 // import java.time.format.DateTimeParseException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -72,6 +74,37 @@ public class ExpenseController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
         return expenseRepository.findByUserEmailAndExpenseDateBetween(email, startDate, endDate);
+    }
+
+    //Retrieve a user's expenses by category
+    @GetMapping("/user/expensesByCategory")
+    public Collection<Expense> getExpensesByCategory(
+            @RequestParam String email,
+            @RequestParam String category) {
+        // Retrieve expenses for the given user and category
+        return expenseRepository.findByUserEmailAndCategory(email, category);
+    }
+
+    //Total expense done by a user on a particular category within the date range 
+    @GetMapping("/user/totalExpenseByCategoryAndDateRange")
+    public Map<String, BigDecimal> getTotalExpenseByCategoryAndDateRange(
+            @RequestParam String email,
+            @RequestParam String category,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+        // Retrieve expenses for the given user, category, and date range
+        Collection<Expense> expenses = expenseRepository.findByUserEmailAndCategoryAndExpenseDateBetween(email, category, startDate, endDate);
+ 
+        // Calculate total expense for the category
+        BigDecimal totalExpense = expenses.stream()
+                .map(Expense::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+ 
+        // Create a map to hold the result
+        Map<String, BigDecimal> result = new HashMap<>();
+        result.put(category, totalExpense);
+ 
+        return result;
     }
 
     // Add expense to a user  
