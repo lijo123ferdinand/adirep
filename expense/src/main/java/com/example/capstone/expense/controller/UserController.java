@@ -2,9 +2,11 @@ package com.example.capstone.expense.controller;
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.Objects;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.capstone.expense.dto.ResetPasswordRequest;
 import com.example.capstone.expense.dto.SalaryRequest;
 import com.example.capstone.expense.model.User;
 import com.example.capstone.expense.repository.UserRepository;
@@ -72,6 +75,28 @@ public class UserController {
         return ResponseEntity.ok("Login successful");
     }
 
+    //Reset password
+    @PostMapping("/user/resetPassword")
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest request) {
+        // Check if new password matches confirm password
+        if (!Objects.equals(request.getNewPassword(), request.getConfirmPassword())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("New password does not match confirm password");
+        }
+
+        // Retrieve user by email
+        User user = userRepository.findByEmail(request.getEmail());
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        // Update user's password
+        String hashedPassword = PasswordHashing.hashPassword(request.getNewPassword());
+        user.setPassword(hashedPassword);
+        userRepository.save(user);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Password reset successfully");
+    }
+
     // Adding salary method
     @PostMapping("/user/addSalary")
     public ResponseEntity<String> addSalary(@RequestBody SalaryRequest salaryRequest) {
@@ -92,4 +117,39 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body("Salary added successfully");
     }
 
+    @GetMapping("/user/info")
+    public ResponseEntity<User> getUserInfo(@RequestParam String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
+    @GetMapping("/user/getBalance")
+    public ResponseEntity<BigDecimal> getBalance(@RequestParam String email) {
+        // Retrieve the user by email
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    
+        // Get the balance of the user
+        BigDecimal balance = user.getBalance();
+    
+        return ResponseEntity.status(HttpStatus.OK).body(balance);
+    }
+
+    @DeleteMapping("/user/delete")
+    public ResponseEntity<String> deleteUser(@RequestParam String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+        
+        userRepository.delete(user);
+        
+        return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully");
+    }
 }
