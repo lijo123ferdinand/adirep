@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import './../styles/Login.css';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,10 +18,13 @@ function LoginForm() {
             password
           });
           
-        console.log('Login successful. ');
-
-        setEmail('');
-        setPassword('');
+          if (response.status === 200) {
+            console.log('Login successful:', response.data);
+            navigate('/dashboard');
+          } else {
+            console.error('Login failed:', response.data);
+          }
+    
 
     } catch(error) {
         console.log('Invalid email or password');
