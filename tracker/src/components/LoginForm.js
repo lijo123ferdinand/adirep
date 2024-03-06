@@ -20,6 +20,7 @@ function LoginForm() {
           
           if (response.status === 200) {
             console.log('Login successful:', response.data);
+            localStorage.setItem('userEmail', email);
             navigate('/dashboard');
           } else {
             console.error('Login failed:', response.data);
