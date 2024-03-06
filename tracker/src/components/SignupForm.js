@@ -20,7 +20,7 @@ function SignupForm() {
       });
       console.log('Signup successful:', response.data);
     } catch (error) {
-      console.log('User with this email already exists');
+      console.log('User with this email already exists!');
     }
   };
 

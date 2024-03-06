@@ -11,7 +11,6 @@ function LoginPage() {
   return (
     <div>
       <h2>Login Page</h2>
-      {/* <LoginForm onLogin={handleLogin} /> */}
       <LoginForm />
       <div>
         New user? <Link to="/signup">Sign up</Link>

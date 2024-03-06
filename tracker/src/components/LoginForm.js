@@ -5,7 +5,6 @@ import './../styles/Login.css';
 function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-//   const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,16 +15,12 @@ function LoginForm() {
             password
           });
           
-        // const token = response.data.token;
         console.log('Login successful. ');
 
         setEmail('');
         setPassword('');
-        // setError(null);
 
     } catch(error) {
-        // setError('Invalid email or password');
-        // console.error('Login error:', error);
         console.log('Invalid email or password');
     }
   };

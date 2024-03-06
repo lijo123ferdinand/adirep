@@ -5,7 +5,6 @@ function SignupPage() {
   return (
     <div>
       <h1>Signup</h1>
-      <p>Welcome to the signup!</p>
       <SignupForm />
     </div>
   );
