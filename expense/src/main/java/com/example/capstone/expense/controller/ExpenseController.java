@@ -11,11 +11,14 @@ import java.util.Collections;
 // import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 // import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +32,8 @@ import com.example.capstone.expense.model.Expense;
 import com.example.capstone.expense.model.User;
 import com.example.capstone.expense.repository.ExpenseRepository;
 import com.example.capstone.expense.repository.UserRepository;
+
+import jakarta.transaction.Transactional;
 
 @RestController
 @RequestMapping("/api")
@@ -146,5 +151,45 @@ public class ExpenseController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Expense added successfully");
     }
 
+    @Transactional
+    @DeleteMapping("/user/expenses/deleteAllExpenses")
+    public ResponseEntity<String> deleteExpensesByEmail(@RequestParam String email) {
+        // Find the user by email
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+ 
+        // Delete all expenses associated with the user
+        expenseRepository.deleteByUser(user);
+ 
+        return ResponseEntity.status(HttpStatus.OK).body("Expenses deleted successfully for user " + email);
+    }
+
+    @DeleteMapping("/user/expenses/delete/{expenseId}")
+    public ResponseEntity<String> deleteExpenseByEmailAndId(@RequestParam String email, @PathVariable Long expenseId) {
+        // Find the user by email
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+ 
+        // Find the expense by ID
+        Optional<Expense> optionalExpense = expenseRepository.findById(expenseId);
+        if (!optionalExpense.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Expense not found");
+        }
+ 
+        // Check if the expense belongs to the user
+        Expense expense = optionalExpense.get();
+        if (!expense.getUser().equals(user)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Expense does not belong to the specified user");
+        }
+ 
+        // Delete the expense
+        expenseRepository.deleteById(expenseId);
+ 
+        return ResponseEntity.status(HttpStatus.OK).body("Expense deleted successfully");
+    }
 
 }

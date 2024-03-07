@@ -27,5 +27,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
     Collection<Expense> findByUserEmailAndCategoryAndExpenseDateBetween(String email, String category,
             LocalDateTime startDate, LocalDateTime endDate);
+
+    void deleteByUser(User user);
 		
 }
