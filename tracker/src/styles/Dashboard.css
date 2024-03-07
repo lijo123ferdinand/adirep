@@ -1,0 +1,18 @@
+.dashboard-container {
+    display: flex;
+  }
+  
+  .user-profile {
+    flex: 0 0 60%; /* 60% of the available space */
+    margin-right: 20px; /* Add some margin */
+  }
+  
+  .add-expense,
+  .add-salary {
+    flex: 0 0 25%; /* 20% of the available space */
+  }
+  
+  .add-salary {
+    margin-top: 25px; /* Add some margin between the two components */
+  }
+  
