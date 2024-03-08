@@ -18,7 +18,12 @@ import com.example.capstone.expense.dto.ResetPasswordRequest;
 import com.example.capstone.expense.dto.SalaryRequest;
 import com.example.capstone.expense.model.User;
 import com.example.capstone.expense.repository.UserRepository;
+import com.example.capstone.expense.security.JwtSecretKeyGenerator;
 import com.example.capstone.expense.security.PasswordHashing;
+
+// import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 @RestController
 @RequestMapping("/api")
@@ -71,8 +76,16 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
         }
 
+        // Generate JWT token
+        String secretKey = JwtSecretKeyGenerator.generateSecretKey();
+        @SuppressWarnings("deprecation")
+        String token = Jwts.builder()
+            .setSubject(existingUser.getEmail()) 
+            .signWith(SignatureAlgorithm.HS256, secretKey)
+            .compact();
+
         // Authentication successful
-        return ResponseEntity.ok("Login successful");
+        return ResponseEntity.ok().header("Authorization", "Bearer " + token).body("Login successful");
     }
 
     //Reset password
