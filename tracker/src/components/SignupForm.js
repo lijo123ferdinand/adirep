@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './../styles/Signup.css'; // Import Signup.css for styling
 
 function SignupForm() {
   const [email, setEmail] = useState('');
@@ -25,52 +24,57 @@ function SignupForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="form-container">
-      <div>
-        <label htmlFor="email">Email:</label>
+<div className="row justify-content-center">
+  <div className="col-md-8 col-lg-6 col-xl-4">
+    <form onSubmit={handleSubmit} className="card p-4 shadow" style={{ width: '40vw' }}>
+      <div className="mb-3">
+        <label htmlFor="email" className="form-label">Email:</label>
         <input
           type="email"
           id="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          className="form-control"
           required
-          className="form-input"
         />
       </div>
-      <div>
-        <label htmlFor="password">Password:</label>
+      <div className="mb-3">
+        <label htmlFor="password" className="form-label">Password:</label>
         <input
           type="password"
           id="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          className="form-control"
           required
-          className="form-input"
         />
       </div>
-      <div>
-        <label htmlFor="username">Username:</label>
+      <div className="mb-3">
+        <label htmlFor="username" className="form-label">Username:</label>
         <input
           type="text"
           id="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          className="form-control"
           required
-          className="form-input"
         />
       </div>
-      <div>
-        <label htmlFor="balance">Balance:</label>
+      <div className="mb-3">
+        <label htmlFor="balance" className="form-label">Balance:</label>
         <input
           type="number"
           id="balance"
           value={balance}
           onChange={(e) => setBalance(e.target.value)}
-          className="form-input"
+          className="form-control"
         />
       </div>
-      <button type="submit" className="form-button">Sign up</button>
+      <button type="submit" className="btn btn-primary">Sign up</button>
     </form>
+  </div>
+</div>
+
   );
 }
 

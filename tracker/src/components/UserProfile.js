@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './../styles/User.css';
 import { jwtDecode } from 'jwt-decode';
 
 function UserProfile() {
@@ -39,32 +38,35 @@ function UserProfile() {
   };
 
   return (
-    <div className="user-profile-container">
-      <h2 className="greeting">Hi {username}</h2>
-      <div className="balance-container">
-        <h3 className="balance-header">Total amount available:</h3>
-        <p className="balance-amount">{balance}</p>
-      </div>
-      <h3 className="transactions-header">Transactions</h3>
-      <table className="transaction-table">
-        <thead>
-          <tr>
-            <th>Category</th>
-            <th>Amount</th>
-            <th>Expense Date</th>
+<div className="container border p-4 shadow-lg">
+  <h2 className="fw-bold">Hi {username}</h2>
+  <div>
+    <h3>Total amount available: <span className="text-muted">{balance}</span></h3>
+  </div>
+  <h3>Transactions</h3>
+  <div className="table-responsive">
+    <table className="table">
+      <thead className="border-bottom">
+        <tr>
+          <th className="text-dark">Category</th>
+          <th className="text-dark">Amount</th>
+          <th className="text-dark">Expense Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {transactions.map((transaction, index) => (
+          <tr key={index}>
+            <td>{transaction.category}</td>
+            <td>{transaction.amount}</td>
+            <td>{transaction.expenseDate}</td>
           </tr>
-        </thead>
-        <tbody>
-          {transactions.map((transaction, index) => (
-            <tr key={index}>
-              <td>{transaction.category}</td>
-              <td>{transaction.amount}</td>
-              <td>{transaction.expenseDate}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
   );
 }
 

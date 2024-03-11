@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './../styles/Salary.css';
 import { jwtDecode } from 'jwt-decode';
 
 function AddSalary() {
@@ -27,22 +26,24 @@ function AddSalary() {
   };
 
   return (
-    <div className="salary-container">
-      <h2>Add Salary</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="amount">Amount:</label>
-          <input
-            type="number"
-            id="amount"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" className="submit-btn">Add Salary</button>
-      </form>
+    <div className="container border p-4 shadow-lg">
+  <h2 className="fw-bold">Add Salary</h2>
+  <form onSubmit={handleSubmit}>
+    <div className="mb-3">
+      <label htmlFor="amount" className="form-label">Amount:</label>
+      <input
+        type="number"
+        id="amount"
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+        className="form-control"
+        required
+      />
     </div>
+    <button type="submit" className="btn btn-primary">Add Salary</button>
+  </form>
+</div>
+
   );
 }
 
