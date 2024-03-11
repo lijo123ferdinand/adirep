@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../services/axiosInstance';
 import './../styles/Login.css';
 
 function LoginForm() {
@@ -11,27 +12,31 @@ function LoginForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
-        const response = await axios.post('http://localhost:8086/api/login', {
-            email,
-            password
-          });
-          
-          if (response.status === 200) {
-            console.log('Login successful:', response.data);
-            localStorage.setItem('userEmail', email);
-            navigate('/dashboard');
-          } else {
-            console.error('Login failed:', response.data);
-          }
-    
-
+      const response = await axiosInstance.post('/login', {
+        email,
+        password
+      });
+  
+      if (response.status === 200) {
+        console.log('Login successful');
+        const token = response.data;
+        console.log("Token: ", token);
+        localStorage.setItem('token', token);
+        navigate('/dashboard');
+      } else {
+        console.error('Login failed:', response.data);
+        // Handle 401 for unauthorized
+        alert('Login failed. Please check your credentials and try again.');
+      }
     } catch(error) {
-        console.log('Invalid email or password');
+      console.error('Error:', error);
+      // Handle network errors or other unexpected errors
+      alert('An error occurred. Please try again later.');
     }
   };
-
+  
   return (
     <form onSubmit={handleSubmit} className="login-form">
       <div className="form-group">

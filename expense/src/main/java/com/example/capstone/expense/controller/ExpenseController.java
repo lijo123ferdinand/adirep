@@ -1,6 +1,7 @@
 package com.example.capstone.expense.controller;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.sql.Date;
@@ -12,6 +13,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -191,5 +193,64 @@ public class ExpenseController {
  
         return ResponseEntity.status(HttpStatus.OK).body("Expense deleted successfully");
     }
+
+    @GetMapping("/user/expenses/analysis")
+    public ResponseEntity<String> getUserExpensesAnalysis(@RequestParam String email) {
+
+        // Retrieve all expenses for the user
+        Collection<Expense> allUserExpenses = expenseRepository.findByUserEmail(email);
+ 
+        // Calculate total amount spent by the user
+        BigDecimal totalAmountSpentByUser = allUserExpenses.stream()
+                .map(Expense::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+ 
+        // Group expenses by category
+        Map<String, BigDecimal> categoryTotalAmounts = allUserExpenses.stream()
+
+                .collect(Collectors.groupingBy(Expense::getCategory,
+
+                        Collectors.mapping(Expense::getAmount, Collectors.reducing(BigDecimal.ZERO, BigDecimal::add))));
+ 
+        // Calculate total amount spent across all categories
+
+        BigDecimal totalAmountSpentAcrossAllCategories = categoryTotalAmounts.values().stream()
+
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+ 
+        // Create a response message
+
+        StringBuilder responseMessage = new StringBuilder();
+
+        responseMessage.append(String.format("Total percentage spent across all categories by user %s:\n", email));
+
+        // Calculate and append percentage spent on each category
+
+        for (Map.Entry<String, BigDecimal> entry : categoryTotalAmounts.entrySet()) {
+
+            String category = entry.getKey();
+
+            BigDecimal categoryTotalAmount = entry.getValue();
+
+            BigDecimal percentageSpent = BigDecimal.ZERO;
+
+            if (totalAmountSpentAcrossAllCategories.compareTo(BigDecimal.ZERO) > 0) {
+
+                percentageSpent = categoryTotalAmount
+
+                        .divide(totalAmountSpentAcrossAllCategories, 4, RoundingMode.HALF_UP)
+
+                        .multiply(BigDecimal.valueOf(100));
+
+            }
+
+            responseMessage.append(String.format("- Category: %s, Percentage Spent: %s%%\n", category, percentageSpent));
+
+        }
+ 
+        return ResponseEntity.status(HttpStatus.OK).body(responseMessage.toString());
+
+    }
+
 
 }

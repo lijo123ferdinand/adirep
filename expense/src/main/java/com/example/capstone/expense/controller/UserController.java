@@ -77,15 +77,22 @@ public class UserController {
         }
 
         // Generate JWT token
-        String secretKey = JwtSecretKeyGenerator.generateSecretKey();
-        @SuppressWarnings("deprecation")
-        String token = Jwts.builder()
-            .setSubject(existingUser.getEmail()) 
-            .signWith(SignatureAlgorithm.HS256, secretKey)
-            .compact();
+        String token = generateJwtToken(existingUser.getEmail());
 
         // Authentication successful
-        return ResponseEntity.ok().header("Authorization", "Bearer " + token).body("Login successful");
+        return ResponseEntity.ok().body(token);
+    }
+
+    // Generate JWT token
+    @SuppressWarnings("deprecation")
+    private String generateJwtToken(String userEmail) {
+        String secretKey = JwtSecretKeyGenerator.generateSecretKey();
+        String token = Jwts.builder()
+            .setSubject(userEmail)
+            .signWith(SignatureAlgorithm.HS256, secretKey)
+            .compact();
+        System.out.println("GENERATED JWT TOKEN: " + token); 
+        return token;
     }
 
     //Reset password

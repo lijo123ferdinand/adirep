@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './../styles/User.css';
+import { jwtDecode } from 'jwt-decode';
 
 function UserProfile() {
   const [username, setUsername] = useState('');
   const [balance, setBalance] = useState('');
   const [transactions, setTransactions] = useState([]);
-  const userEmail = localStorage.getItem('userEmail');
 
   useEffect(() => {
-    if (userEmail) {
-      fetchUserProfile();
-    }
-  }, [userEmail]);
+    fetchUserProfile();
+  }, []);
 
   useEffect(() => {
     console.log('Balance:', balance);
@@ -20,6 +18,12 @@ function UserProfile() {
 
   const fetchUserProfile = async () => {
     try {
+      const token = localStorage.getItem('token');
+      console.log('Token: ', token);
+      const decodedToken = jwtDecode(token);
+      console.log('Decoded token: ', decodedToken);
+      const userEmail = decodedToken.sub;
+      console.log('Email: ', userEmail);
       const response = await axios.get('http://localhost:8086/api/user/info', {
         params: {
           email: userEmail

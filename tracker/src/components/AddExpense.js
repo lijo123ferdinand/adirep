@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './../styles/Expense.css';
+import { jwtDecode } from 'jwt-decode';
 
 function AddExpense() {
   const [category, setCategory] = useState('');
   const [amount, setAmount] = useState('');
-  const userEmail = localStorage.getItem('userEmail');
 
   const handleSubmit = async () => {
     try {
+      const token = localStorage.getItem('token');
+      console.log('Token: ', token);
+      const decodedToken = jwtDecode(token);
+      console.log('Decoded token: ', decodedToken);
+      const userEmail = decodedToken.sub;
+      console.log('Email: ', userEmail);
       const response = await axios.post('http://localhost:8086/api/user/expenses', {
         email: userEmail, 
         category,

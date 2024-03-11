@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './../styles/Salary.css';
+import { jwtDecode } from 'jwt-decode';
 
 function AddSalary() {
   const [amount, setAmount] = useState('');
-  const userEmail = localStorage.getItem('userEmail');
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+    // e.preventDefault();
     
     try {
+      const token = localStorage.getItem('token');
+      console.log('Token: ', token);
+      const decodedToken = jwtDecode(token);
+      console.log('Decoded token: ', decodedToken);
+      const userEmail = decodedToken.sub;
+      console.log('Email: ', userEmail);
       const response = await axios.post('http://localhost:8086/api/user/addSalary', {
         email: userEmail, 
         amount: parseFloat(amount)
