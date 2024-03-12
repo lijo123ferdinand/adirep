@@ -25,12 +25,6 @@ function NavBar() {
             <li className="nav-item">
               <Link className="nav-link" to="/analytics">Analytics</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/login">Logout</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/passwordReset">Reset Passsword</Link>
-            </li>
             <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
               <ul className="navbar-nav ms-auto"> {/* Align to the right */}
                 <li className="nav-item dropdown">
