@@ -65,6 +65,11 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody User loginUser) {
+        // Admin Login
+        // if ("admin@email.com".equals(loginUser.getEmail()) && "admin".equals(loginUser.getPassword())) {
+        //     return ResponseEntity.ok("Admin login successful");
+        // }
+    
         // Find the user by email
         User existingUser = userRepository.findByEmail(loginUser.getEmail());
         if (existingUser == null) {

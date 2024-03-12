@@ -15,17 +15,23 @@ function LoginPage() {
     e.preventDefault();
   
     try {
-      const response = await axiosInstance.post('/login', {
-        email,
-        password
-      });
+      let response;
+      if (email === 'admin@email.com') {
+        response = await axiosInstance.post('/admin/login', { email, password });
+      } else {
+        response = await axiosInstance.post('/login', { email, password });
+      }
     
       if (response.status === 200) {
         console.log('Login successful');
         const token = response.data;
         console.log("Token: ", token);
         localStorage.setItem('token', token);
-        navigate('/dashboard');
+        if (email === 'admin@email.com') {
+          navigate('/admin');
+        } else {
+          navigate('/dashboard');
+        }
       } else {
         console.error('Login failed:', response.data);
         // Handle 401 for unauthorized
