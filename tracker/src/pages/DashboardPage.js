@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import UserProfile from '../components/UserProfile';
 import AddExpense from '../components/AddExpense';
 import AddSalary from '../components/AddSalary';
+import DeleteAllExpenses from '../components/DeleteAllExpenses';
 import './../styles/Dashboard.css';
 
 function DashboardPage() {
@@ -28,6 +29,9 @@ function DashboardPage() {
         </div>
         <div className="add-salary">
           <AddSalary />
+        </div>
+        <div>
+          <DeleteAllExpenses />
         </div>
       </div>
     </div>

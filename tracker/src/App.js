@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import SignupPage from './pages/SignupPage';
 import AnalyticsPage from './pages/AnalyticsPage';
 import StartPage from './pages/StartPage';
+import PasswordResetPage from './pages/PasswordResetPage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route exact path="/" element={<StartPage />} /> 
         <Route exact path="/login" element={<LoginPage />} />
         <Route exact path="/signup" element={<SignupPage />} />
+        <Route exact path="/passwordReset" element={<PasswordResetPage />}/>
         <Route exact path="/dashboard" element={<DashboardPage />} />
         <Route exact path="/analytics" element={<AnalyticsPage />} />
       </Routes>

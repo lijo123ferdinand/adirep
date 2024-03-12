@@ -1,10 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-
 function AnalyticsPage() {
   return (
     <div>
-      <h2>Analytics Page</h2>
+      <h2>Expenses Analysis</h2>
     </div>
   );
 }
