@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import Swal from 'sweetalert2';
 
 function PasswordResetPage() {
   const [newPassword, setNewPassword] = useState('');
@@ -29,11 +30,21 @@ function PasswordResetPage() {
         confirmPassword,
       });
       console.log(response.data); // Print response data on success
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'Password reset successful!',
+      });
     } catch (error) {
       setError('Error resetting password');
       console.error('Password reset error:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Password reset failed',
+      });
     }
-  };
+  }  
 
   return (
     <div className="container mt-5">

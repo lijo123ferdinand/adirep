@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 // import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../services/axiosInstance';
+import Swal from 'sweetalert2';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -17,7 +19,7 @@ function LoginPage() {
         email,
         password
       });
-  
+    
       if (response.status === 200) {
         console.log('Login successful');
         const token = response.data;
@@ -27,13 +29,21 @@ function LoginPage() {
       } else {
         console.error('Login failed:', response.data);
         // Handle 401 for unauthorized
-        alert('Login failed. Please check your credentials and try again.');
+        Swal.fire({
+          icon: 'error',
+          title: 'Login failed',
+          text: 'Please check your credentials and try again.',
+        });
       }
     } catch(error) {
       console.error('Error:', error);
       // Handle network errors or other unexpected errors
-      alert('An error occurred. Please try again later.');
-    }
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Incorrect Email or Password.',
+      });
+    }    
   };
   
   return (
@@ -66,8 +76,14 @@ function LoginPage() {
           <button type="submit" className="btn btn-primary">Login</button>
         </form>
       </div>
-    </div>
+      <div className="row justify-content-left mt-3">
+        <div className="col-lg-6">
+          <p className="mb-0 text-center">New user? <Link to="/signup">Signup</Link></p>
+        </div>
+      </div> 
+    </div>   
   </div>
+  
   );
 }
 
