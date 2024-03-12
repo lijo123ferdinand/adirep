@@ -1,5 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 
 function NavBar() {
   return (
@@ -22,6 +25,29 @@ function NavBar() {
             <li className="nav-item">
               <Link className="nav-link" to="/analytics">Analytics</Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/login">Logout</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/passwordReset">Reset Passsword</Link>
+            </li>
+            <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
+              <ul className="navbar-nav ms-auto"> {/* Align to the right */}
+                <li className="nav-item dropdown">
+                  <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Options
+                  </a>
+                  <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li>
+                      <Link className="dropdown-item" to="/login">Logout</Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/passwordReset">Reset Password</Link>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
           </ul>
         </div>
       </div>
