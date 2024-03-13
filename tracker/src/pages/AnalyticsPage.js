@@ -13,14 +13,16 @@ function AnalyticsPage() {
   return (
     <div>
       <h2>Expenses Analysis</h2>
-      <AnalysisForm 
+      {/* <AnalysisForm 
         startDate={startDate}
         setStartDate={setStartDate}
         endDate={endDate}
         setEndDate={setEndDate}
-        handleTransactionsUpdate={setTransactions} // Pass a function to update transactions
-      />
-      {/* <ExpensesByDateRange /> */}
+        handleTransactionsUpdate={setTransactions} // Pass a function to update transactions */}
+      {/* /> */}
+      {/* <h2>expense within the date range</h2> */}
+      <ExpensesByDateRange />
+      <h2>total expense</h2>
 
       {/* <UserProfile startDate={startDate} endDate={endDate} transactions={transactions} /> */}
       <ChartContainer />

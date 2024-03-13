@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode'; // Import jwtDecode library
+import Chart from 'chart.js/auto'; // Import Chart.js library
 
 const ExpensesByDateRange = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [expenses, setExpenses] = useState([]);
-  
-  // Function to retrieve JWT token from local storage
+  const [chartData, setChartData] = useState(null); // State for chart data
+
   const getToken = () => {
     return localStorage.getItem('token');
   };
@@ -14,28 +16,76 @@ const ExpensesByDateRange = () => {
   const handleDateRangeSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Retrieve JWT token
       const token = getToken();
-      
-      // Set headers with JWT token
-      const headers = {
-        'Authorization': `Bearer ${token}`
-      };
-      
-      // Make API request with headers
+      const decodedToken = jwtDecode(token);
+      const userEmail = decodedToken.sub;
+      const isoStartDate = new Date(startDate).toISOString();
+      const isoEndDate = new Date(endDate).toISOString();
+
       const response = await axios.get('http://localhost:8086/api/user/expensesByDateRange', {
         params: {
-          startDate,
-          endDate
+          email: userEmail, // Pass email as parameter
+          startDate: isoStartDate, // Use isoStartDate here
+          endDate: isoEndDate // Use isoEndDate here
         },
-        headers: headers
       });
       setExpenses(response.data);
+
+      // Generate chart data
+      const categories = response.data.map(expense => expense.category);
+      const uniqueCategories = Array.from(new Set(categories));
+      const data = uniqueCategories.map(category => {
+        const categoryExpenses = response.data.filter(expense => expense.category === category);
+        const totalAmount = categoryExpenses.reduce((acc, curr) => acc + curr.amount, 0);
+        return { category, totalAmount };
+      });
+
+      setChartData(data);
     } catch (error) {
       console.error('Error fetching expenses:', error);
+      // You can add user feedback here, like displaying an error message on the UI
     }
   };
 
+  useEffect(() => {
+    if (chartData) {
+      renderChart();
+    }
+  }, [chartData]);
+
+  const renderChart = () => {
+    const ctx = document.getElementById('expenseChart');
+    const existingChart = Chart.getChart(ctx);
+  
+    // Destroy existing chart if it exists
+    if (existingChart) {
+      existingChart.destroy();
+    }
+  
+    new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: chartData.map(data => data.category),
+        datasets: [{
+          label: 'Expense Categories',
+          data: chartData.map(data => data.totalAmount),
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.6)',
+            'rgba(54, 162, 235, 0.6)',
+            'rgba(255, 206, 86, 0.6)',
+            'rgba(75, 192, 192, 0.6)',
+            'rgba(153, 102, 255, 0.6)',
+            'rgba(255, 159, 64, 0.6)'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    });
+  };
+  
   return (
     <div>
       <h3>Expenses by Date Range</h3>
@@ -71,6 +121,9 @@ const ExpensesByDateRange = () => {
             <li key={index}>{expense.category}: {expense.amount}</li>
           ))}
         </ul>
+      </div>
+      <div className="mt-5">
+        <canvas id="expenseChart" width="400" height="400"></canvas>
       </div>
     </div>
   );
