@@ -244,7 +244,7 @@ public class ExpenseController {
 
             }
 
-            responseMessage.append(String.format("- Category: %s, Percentage Spent: %s%%\n", category, percentageSpent));
+            responseMessage.append(String.format("%s:%s%%\n", category, percentageSpent));
 
         }
  
