@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode'; // Import jwtDecode library
 import Chart from 'chart.js/auto'; // Import Chart.js library
+import ChartTypeDropdown from './ChartTypeDropdown'; // Import the ChartTypeDropdown component
 
 const ExpensesByDateRange = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [expenses, setExpenses] = useState([]);
   const [chartData, setChartData] = useState(null); // State for chart data
+  const [chartType, setChartType] = useState('line'); // Default chart type is line
 
   const getToken = () => {
     return localStorage.getItem('token');
@@ -43,7 +45,6 @@ const ExpensesByDateRange = () => {
       setChartData(data);
     } catch (error) {
       console.error('Error fetching expenses:', error);
-      // You can add user feedback here, like displaying an error message on the UI
     }
   };
 
@@ -51,32 +52,27 @@ const ExpensesByDateRange = () => {
     if (chartData) {
       renderChart();
     }
-  }, [chartData]);
+  }, [chartData, chartType]); // Run this effect whenever chartData or chartType changes
 
   const renderChart = () => {
     const ctx = document.getElementById('expenseChart');
     const existingChart = Chart.getChart(ctx);
   
-    // Destroy existing chart if it exists
+    // If there is an existing chart, destroy it
     if (existingChart) {
       existingChart.destroy();
     }
   
     new Chart(ctx, {
-      type: 'pie',
+      type: chartType, // Use chartType state here
       data: {
         labels: chartData.map(data => data.category),
         datasets: [{
           label: 'Expense Categories',
           data: chartData.map(data => data.totalAmount),
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.6)',
-            'rgba(54, 162, 235, 0.6)',
-            'rgba(255, 206, 86, 0.6)',
-            'rgba(75, 192, 192, 0.6)',
-            'rgba(153, 102, 255, 0.6)',
-            'rgba(255, 159, 64, 0.6)'
-          ]
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
         }]
       },
       options: {
@@ -86,6 +82,11 @@ const ExpensesByDateRange = () => {
     });
   };
   
+
+  const handleChartTypeChange = (selectedType) => {
+    setChartType(selectedType);
+  };
+
   return (
     <div>
       <h3>Expenses by Date Range</h3>
@@ -114,17 +115,11 @@ const ExpensesByDateRange = () => {
         </div>
         <button type="submit" className="btn btn-primary">Get Expenses</button>
       </form>
-      <div className="mt-3">
-        <h4>Expenses:</h4>
-        <ul>
-          {expenses.map((expense, index) => (
-            <li key={index}>{expense.category}: {expense.amount}</li>
-          ))}
-        </ul>
-      </div>
+      {/* Expenses list */}
       <div className="mt-5">
         <canvas id="expenseChart" width="400" height="400"></canvas>
       </div>
+      <ChartTypeDropdown onChange={handleChartTypeChange} />
     </div>
   );
 };

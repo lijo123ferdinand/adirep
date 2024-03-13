@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import UserProfile from '../components/UserProfile';
+// import UserProfile from '../components/UserProfile';
 import ChartContainer from '../components/ChartContainer';
-import AnalysisForm from '../components/AnalysisForm';
+// import AnalysisForm from '../components/AnalysisForm';
 import ExpensesByDateRange from '../components/ExpensesByDateRange';
+import ChartTypeDropdown from '../components/ChartTypeDropdown'; // Import the ChartTypeDropdown component
+
 
 function AnalyticsPage() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [transactions, setTransactions] = useState([]);
- 
+  
 
   return (
     <div>
