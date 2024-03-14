@@ -9,7 +9,10 @@ function AddSalary() {
     try {
       if (parseFloat(amount) < 0) {
         alert('Oops! Salary cannot be negative!');
+      } else if (parseFloat(amount) === 0) {
+        alert('Salary amount must be greater than 0.');
       }
+
       const token = localStorage.getItem('token');
       console.log('Token: ', token);
       const decodedToken = jwtDecode(token);
