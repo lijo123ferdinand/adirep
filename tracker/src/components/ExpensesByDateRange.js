@@ -88,11 +88,11 @@ const ExpensesByDateRange = () => {
   };
 
   return (
-    <div>
+    <div className="card p-4 shadow">
       <h3>Expenses by Date Range</h3>
-      <form onSubmit={handleDateRangeSubmit}>
-        <div className="form-group">
-          <label htmlFor="startDate">Start Date:</label>
+      <form onSubmit={handleDateRangeSubmit} className="row g-3">
+        <div className="col-md-4">
+          <label htmlFor="startDate" className="form-label">Start Date:</label>
           <input
             type="date"
             id="startDate"
@@ -102,8 +102,8 @@ const ExpensesByDateRange = () => {
             className="form-control"
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="endDate">End Date:</label>
+        <div className="col-md-4">
+          <label htmlFor="endDate" className="form-label">End Date:</label>
           <input
             type="date"
             id="endDate"
@@ -113,13 +113,16 @@ const ExpensesByDateRange = () => {
             className="form-control"
           />
         </div>
-        <button type="submit" className="btn btn-primary">Get Expenses</button>
+        <div className="col-md-2">
+          <ChartTypeDropdown onChange={handleChartTypeChange} />
+        </div>
+        <div className="col-md-2 mt-3"> {/* Adjusted margin-top */}
+          <button type="submit" className="btn btn-primary">Get Expenses</button>
+        </div>
       </form>
-      {/* Expenses list */}
       <div className="mt-5">
         <canvas id="expenseChart" width="400" height="400"></canvas>
       </div>
-      <ChartTypeDropdown onChange={handleChartTypeChange} />
     </div>
   );
 };

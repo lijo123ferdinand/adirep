@@ -3,7 +3,7 @@ import UserProfile from '../components/UserProfile';
 import AddExpense from '../components/AddExpense';
 import AddSalary from '../components/AddSalary';
 import DeleteAllExpenses from '../components/DeleteAllExpenses';
-import './../styles/Dashboard.css';
+import ChartContainer from '../components/ChartContainer';
 
 function DashboardPage() {
   const [userEmail, setUserEmail] = useState('');
@@ -19,24 +19,45 @@ function DashboardPage() {
   }, []);
 
   return (
-    <div className="dashboard-container">
-      <div className="user-profile">
-        <UserProfile userEmail={userEmail} />
-      </div>
-      <div className="expense-salary-container">
-        <div className="add-expense">
-          <AddExpense />
-        </div>
-        <div className="add-salary">
-          <AddSalary />
-        </div>
-        <div>
-          <DeleteAllExpenses />
+    <div className="card-container p-4">
+      <div className="container-fluid dashboard-container">
+        <div className="row">
+          <div className="col-md-7">
+          <div className="card user-profile" style={{ maxHeight: 'calc(100vh - 80px)', overflowY: 'auto' }}>
+              <UserProfile userEmail={userEmail} />
+            </div>
+            <div>
+            <ChartContainer />
+
+            </div>
+          </div>
+          <div className="col-md-5">
+            <div className="row">
+              <div className="col">
+                <div className="card add-expense" style={{ marginBottom: '10px' }}>
+                  <AddExpense />
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col">
+                <div className="card add-salary" style={{ marginBottom: '10px' }}>
+                  <AddSalary />
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col">
+                <div className="card delete-all-expenses">
+                  <DeleteAllExpenses />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 }
-
 
 export default DashboardPage;

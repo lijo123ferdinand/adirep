@@ -22,8 +22,7 @@ const ChartContainer = () => {
       
           // Split the response body by lines
           const lines = response.data.trim().split('\n');
-          lines.shift();
-
+          
       
           // Extract category name and percentage spent from each line
           const dataArray = lines.map(line => {

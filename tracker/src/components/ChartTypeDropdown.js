@@ -7,13 +7,15 @@ const ChartTypeDropdown = ({ onChange }) => {
   };
 
   return (
-    <div>
-      <label htmlFor="chartType">Select Chart Type:</label>
-      <select id="chartType" onChange={handleSelectChange}>
+    <div className="mb-3">
+      <label htmlFor="chartType" className="form-label">Select Chart Type:</label>
+      <select
+        id="chartType"
+        onChange={handleSelectChange}
+        className="form-select">
         <option value="line">Line Chart</option>
         <option value="bar">Bar Chart</option>
         <option value="pie">Pie Chart</option>
-        {/* Add more chart types as needed */}
       </select>
     </div>
   );
