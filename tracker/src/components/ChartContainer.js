@@ -4,6 +4,7 @@ import axios from 'axios';
 import {jwtDecode} from 'jwt-decode';
 
 const ChartContainer = () => {
+  const [username, setUsername] = useState('');
   const chartContainerRef = useRef(null);
   const [analysisData, setAnalysisData] = useState([]);
 
@@ -13,17 +14,17 @@ const ChartContainer = () => {
           const token = localStorage.getItem('token');
           const decodedToken = jwtDecode(token);
           const userEmail = decodedToken.sub;
-      
           const response = await axios.get('http://localhost:8086/api/user/expenses/analysis', {
             params: {
               email: userEmail
             }
           });
-      
+          setUsername(response.data.username);
+          console.log(username);
           // Split the response body by lines
           const lines = response.data.trim().split('\n');
-          
-      
+          lines.shift();
+    
           // Extract category name and percentage spent from each line
           const dataArray = lines.map(line => {
             const [category, percentage] = line.split(':');
@@ -35,8 +36,6 @@ const ChartContainer = () => {
           console.error('Error fetching analysis data:', error);
         }
       };
-      
-
     fetchData();
   }, []);
 
@@ -80,7 +79,6 @@ const ChartContainer = () => {
       }
     });
   };
-
 
   return (
     <div className="chart-container">

@@ -23,12 +23,11 @@ function DashboardPage() {
       <div className="container-fluid dashboard-container">
         <div className="row">
           <div className="col-md-7">
-          <div className="card user-profile" style={{ maxHeight: 'calc(100vh - 80px)', overflowY: 'auto' }}>
+            <div className="card user-profile" style={{ maxHeight: 'calc(100vh - 80px)', overflowY: 'auto' }}>
               <UserProfile userEmail={userEmail} />
             </div>
-            <div>
-            <ChartContainer />
-
+            <div className="card-container">
+              <ChartContainer />
             </div>
           </div>
           <div className="col-md-5">
