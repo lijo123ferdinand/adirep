@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import DeleteExpense from './DeleteExpense';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
 function UserProfile() {
   const [username, setUsername] = useState('');
   const [balance, setBalance] = useState('');
+  const [userEmail, setUserEmail] = useState('');
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
@@ -23,6 +25,7 @@ function UserProfile() {
       console.log('Decoded token: ', decodedToken);
       const userEmail = decodedToken.sub;
       console.log('Email: ', userEmail);
+      setUserEmail(userEmail);
       const response = await axios.get('http://localhost:8086/api/user/info', {
         params: {
           email: userEmail
@@ -35,6 +38,10 @@ function UserProfile() {
     } catch (error) {
       console.error('Error fetching user profile:', error);
     }
+  };
+
+  const handleDeleteExpense = (transactionId) => {
+    setTransactions(transactions.filter(transaction => transaction.id !== transactionId));
   };
 
   return (
@@ -59,6 +66,13 @@ function UserProfile() {
                 <td>{transaction.category}</td>
                 <td>{transaction.amount}</td>
                 <td>{transaction.expenseDate}</td>
+                <td>
+                  <DeleteExpense 
+                    transactionId={transaction.id} 
+                    userEmail={userEmail} 
+                    onDelete={handleDeleteExpense} 
+                  />
+                </td>
               </tr>
             ))}
           </tbody>
