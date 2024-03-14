@@ -38,38 +38,34 @@ function UserProfile() {
   };
 
   return (
-<div className="container border p-4 shadow-lg">
-  <h2 className="fw-bold">Hi {username}</h2>
-  <div>
-    <h3>Total amount available: <span className="text-muted">{balance}</span></h3>
-  </div>
-  <h3>Transactions</h3>
-  <div className="table-responsive">
-    <table className="table">
-      <thead className="border-bottom">
-        <tr>
-          <th className="text-dark">Category</th>
-          <th className="text-dark">Amount</th>
-          <th className="text-dark">Expense Date</th>
-        </tr>
-      </thead>
-      <tbody>
-        {transactions.map((transaction, index) => (
-          <tr key={index}>
-            <td>{transaction.category}</td>
-            <td>{transaction.amount}</td>
-            <td>{transaction.expenseDate}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-</div>
-
-
+    <div className="container border p-4 shadow-lg">
+      <h2 className="fw-bold">Hi {username}</h2>
+      <div>
+        <h3>Total amount available: <span className="text-muted">{balance}</span></h3>
+      </div>
+      <h3>Transactions</h3>
+      <div className="table-responsive">
+        <table className="table">
+          <thead className="border-bottom">
+            <tr>
+              <th className="text-dark">Category</th>
+              <th className="text-dark">Amount</th>
+              <th className="text-dark">Expense Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {transactions.map((transaction, index) => (
+              <tr key={index}>
+                <td>{transaction.category}</td>
+                <td>{transaction.amount}</td>
+                <td>{transaction.expenseDate}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 }
-
-
 
 export default UserProfile;
