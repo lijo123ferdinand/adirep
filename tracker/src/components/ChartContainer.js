@@ -1,62 +1,61 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Chart from 'chart.js/auto';
 import axios from 'axios';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
-const ChartContainer = () => {
+const ChartContainer = ({ transactions }) => {
   const [username, setUsername] = useState('');
-  const chartContainerRef = useRef(null);
-  const [analysisData, setAnalysisData] = useState([]);
+  const chartRef = useRef(null);
+  const chartInstanceRef = useRef(null); // Ref to store the chart instance
 
-  useEffect(() => {
-    const fetchData = async () => {
-        try {
-          const token = localStorage.getItem('token');
-          const decodedToken = jwtDecode(token);
-          const userEmail = decodedToken.sub;
-          const response = await axios.get('http://localhost:8086/api/user/expenses/analysis', {
-            params: {
-              email: userEmail
-            }
-          });
-          setUsername(response.data.username);
-          console.log(username);
-          // Split the response body by lines
-          const lines = response.data.trim().split('\n');
-          lines.shift();
-    
-          // Extract category name and percentage spent from each line
-          const dataArray = lines.map(line => {
-            const [category, percentage] = line.split(':');
-            return { category: category.trim(), percentageSpent: parseFloat(percentage) }; // Convert percentage to float
-          });
-      
-          setAnalysisData(dataArray);
-        } catch (error) {
-          console.error('Error fetching analysis data:', error);
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const decodedToken = jwtDecode(token);
+      const userEmail = decodedToken.sub;
+      const response = await axios.get('http://localhost:8086/api/user/expenses/analysis', {
+        params: {
+          email: userEmail
         }
-      };
-    fetchData();
-  }, []);
+      });
+      setUsername(response.data.username);
+      console.log(username);
+      // Split the response body by lines
+      const lines = response.data.trim().split('\n');
+      lines.shift();
+
+      // Extract category name and percentage spent from each line
+      const dataArray = lines.map(line => {
+        const [category, percentage] = line.split(':');
+        return { category: category.trim(), percentageSpent: parseFloat(percentage) }; // Convert percentage to float
+      });
+
+      return dataArray;
+    } catch (error) {
+      console.error('Error fetching analysis data:', error);
+      return [];
+    }
+  };
 
   useEffect(() => {
-    if (analysisData && analysisData.length > 0) {
-      renderChart();
-    }
-  }, [analysisData]);
+    const renderChart = async () => {
+      const analysisData = await fetchData();
+      if (!Array.isArray(analysisData)) {
+        console.error('Analysis data is not an array.');
+        return;
+      }
 
-  const renderChart = () => {
-    if (!Array.isArray(analysisData)) {
-      console.error('Analysis data is not an array.');
-      return;
-    }
+      const ctx = chartRef.current.getContext('2d');
 
-    const ctx = chartContainerRef.current.getContext('2d');
+      const labels = analysisData.map(item => item.category);
+      const percentages = analysisData.map(item => item.percentageSpent);
 
-    const labels = analysisData.map(item => item.category);
-    const percentages = analysisData.map(item => item.percentageSpent);
+      // Destroy previous chart instance if exists
+      if (chartInstanceRef.current) {
+        chartInstanceRef.current.destroy();
+      }
 
-    new Chart(ctx, {
+      chartInstanceRef.current = new Chart(ctx, {
         type: 'pie',
         data: {
           labels: labels,
@@ -73,16 +72,26 @@ const ChartContainer = () => {
             ]
           }]
         },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false
+        options: {
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+    };
+
+    renderChart();
+
+    // Clean up function to destroy the chart instance when component unmounts
+    return () => {
+      if (chartInstanceRef.current) {
+        chartInstanceRef.current.destroy();
       }
-    });
-  };
+    };
+  }, [transactions]);
 
   return (
     <div className="chart-container">
-      <canvas ref={chartContainerRef} width="400" height="400"></canvas>
+      <canvas ref={chartRef}></canvas>
     </div>
   );
 };

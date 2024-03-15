@@ -3,7 +3,7 @@ import DeleteExpense from './DeleteExpense';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
-function UserProfile() {
+function UserProfile({ updateTransactions }) {
   const [username, setUsername] = useState('');
   const [balance, setBalance] = useState('');
   const [userEmail, setUserEmail] = useState('');
@@ -42,7 +42,11 @@ function UserProfile() {
 
   const handleDeleteExpense = (transactionId) => {
     setTransactions(transactions.filter(transaction => transaction.id !== transactionId));
+    const updatedTransactions = transactions.filter(transaction => transaction.id !== transactionId);
+    // Update transactions state in DashboardPage
+    updateTransactions(updatedTransactions);
   };
+  
 
   return (
     <div className="container border p-4 shadow-lg">

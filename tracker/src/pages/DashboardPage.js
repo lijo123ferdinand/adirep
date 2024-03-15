@@ -7,6 +7,11 @@ import ChartContainer from '../components/ChartContainer';
 
 function DashboardPage() {
   const [userEmail, setUserEmail] = useState('');
+  const [transactions, setTransactions] = useState([]);
+
+  const updateTransactions = (updatedTransactions) => {
+    setTransactions(updatedTransactions);
+  };
 
   useEffect(() => {
     // Retrieve user email from local storage
@@ -24,10 +29,10 @@ function DashboardPage() {
         <div className="row">
           <div className="col-md-7">
             <div className="card user-profile" style={{ maxHeight: 'calc(100vh - 80px)', overflowY: 'auto' }}>
-              <UserProfile userEmail={userEmail} />
+              <UserProfile userEmail={userEmail} updateTransactions={updateTransactions} />
             </div>
             <div className="card-container">
-              <ChartContainer />
+            <ChartContainer transactions={transactions} />
             </div>
           </div>
           <div className="col-md-5">
