@@ -1,6 +1,5 @@
 import ExpensesByDateRange from '../components/ExpensesByDateRange';
 
-
 function AnalyticsPage() {
   return (
     <div className="card-container p-4">
