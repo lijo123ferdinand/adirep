@@ -1,3 +1,4 @@
+import UserChart from "../components/UserChart";
 import UserList from "../components/UserList";
 
 function AdminDashboardPage() {
@@ -5,6 +6,7 @@ function AdminDashboardPage() {
     <div>
         <h2>Admin Dashboard</h2>
         <UserList />
+        <UserChart />
     </div>
   );
 }
