@@ -31,7 +31,7 @@ function UserChart() {
     const balances = userData.map(user => user.balance);
 
     new Chart(ctx, {
-      type: 'bar',
+      type: 'pie',
       data: {
         labels: labels,
         datasets: [{

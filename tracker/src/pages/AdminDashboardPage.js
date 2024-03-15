@@ -6,7 +6,6 @@ function AdminDashboardPage() {
     <div>
         <h2>Admin Dashboard</h2>
         <UserList />
-        <UserChart />
     </div>
   );
 }

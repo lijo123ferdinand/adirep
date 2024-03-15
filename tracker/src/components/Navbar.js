@@ -5,7 +5,7 @@ import DeleteUserAccount from './DeleteUserAccount';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
-function NavBar() {
+function NavBar({ isAdmin }) { // Pass isAdmin as a prop
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
@@ -26,6 +26,11 @@ function NavBar() {
             <li className="nav-item">
               <Link className="nav-link" to="/analytics">Analytics</Link>
             </li>
+            {isAdmin && ( // Render Admin Analytics link only if isAdmin is true
+              <li className="nav-item"> 
+                <Link className="nav-link" to="/adminAnalytics">Admin Analytics</Link>
+              </li>
+            )}
             <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
               <ul className="navbar-nav ms-auto"> {/* Align to the right */}
                 <li className="nav-item dropdown">
