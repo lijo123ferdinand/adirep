@@ -8,6 +8,12 @@ function AddExpense() {
 
   const handleSubmit = async () => {
     try {
+      const expenseAmount = parseFloat(amount);
+      if (expenseAmount <= 0) {
+        alert('Expense amount must be greater than 0.');
+        return;
+      }
+  
       const token = localStorage.getItem('token');
       const decodedToken = jwtDecode(token);
       const userEmail = decodedToken.sub;

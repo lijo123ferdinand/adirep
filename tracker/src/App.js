@@ -8,6 +8,7 @@ import AnalyticsPage from './pages/AnalyticsPage';
 import StartPage from './pages/StartPage';
 import PasswordResetPage from './pages/PasswordResetPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
+import AdminAnalyticsPage from './pages/AdminAnalyticsPage';
 
 function App() {
   return (
@@ -39,6 +40,8 @@ function AppContent() {
         <Route exact path="/dashboard" element={<DashboardPage />} />
         <Route exact path="/analytics" element={<AnalyticsPage />} />
         <Route exact path="/admin" element={<AdminDashboardPage />} />
+        <Route exact path="/adminAnalytics" element={<AdminAnalyticsPage />} />
+
       </Routes>
     </>
   );

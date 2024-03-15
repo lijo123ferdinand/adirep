@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-// import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../services/axiosInstance';
 import Swal from 'sweetalert2';
+import NavBar from './NavBar'; // Import NavBar component
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -90,6 +90,7 @@ function LoginPage() {
           </div>
         </div> 
       </div>   
+      {email === 'admin@email.com' && <NavBar isAdmin={true} />} {/* Pass isAdmin prop if admin is logged in */}
     </div>  
   );
 }
