@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function SignupPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [balance, setBalance] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,6 +20,8 @@ function SignupPage() {
         balance: balance || null 
       });
       console.log('Signup successful:', response.data);
+      alert('Signup successful!');
+      navigate('/login'); // Navigate to login page
     } catch (error) {
       console.log('User with this email already exists!');
     }
