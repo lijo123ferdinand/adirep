@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../services/axiosInstance';
 import Swal from 'sweetalert2';
-import Navbar from '../components/Navbar'; // Import NavBar component
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -90,7 +89,7 @@ function LoginPage() {
           </div>
         </div> 
       </div>   
-      {email === 'admin@email.com' && <Navbar isAdmin={true} />} {/* Pass isAdmin prop if admin is logged in */}
+      {/* {email !== 'admin@email.com' && <Navbar />} Render Navbar only if user is not admin */}
     </div>  
   );
 }
