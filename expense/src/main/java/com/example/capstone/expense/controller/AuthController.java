@@ -3,11 +3,17 @@ package com.example.capstone.expense.controller;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Optional;
+
+
+// import org.apache.el.stream.Optional;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,4 +68,20 @@ public class AuthController {
         // Query expenses for the given date
         return expenseRepository.findByExpenseDate(expense_date);
     }
+  
+
+@DeleteMapping("/admin/users/{userId}")
+ResponseEntity<String> deleteUserById(@PathVariable Long userId) {
+    // Find the user by ID
+    Optional<User> optionalUser = userRepository.findById(userId);
+    if (optionalUser.isPresent()) {
+        // Delete the user
+        userRepository.delete(optionalUser.get());
+        return ResponseEntity.ok("User deleted successfully");
+    } else {
+        return ResponseEntity.notFound().build();
+    }
+}
+
+
 }
