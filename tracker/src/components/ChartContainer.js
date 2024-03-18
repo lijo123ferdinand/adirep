@@ -54,6 +54,7 @@ const ChartContainer = ({ transactions }) => {
       if (chartInstanceRef.current) {
         chartInstanceRef.current.destroy();
       }
+      const customColors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF8A80', '#A1887F', '#4DD0E1', '#FF5722', '#009688', '#FF1744', '#00E676', '#FF4081', '#18FFFF', '#651FFF', '#FF6E40', '#FFD740', '#7C4DFF', '#1DE9B6', '#C51162', '#FF5252', '#2962FF', '#FFD740', '#64DD17', '#FFAB00', '#FF1744', '#00B8D4', '#FF6D00', '#FFEA00', '#00C853'];
 
       chartInstanceRef.current = new Chart(ctx, {
         type: 'pie',
@@ -62,14 +63,8 @@ const ChartContainer = ({ transactions }) => {
           datasets: [{
             label: 'Percentage Spent',
             data: percentages,
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.6)',
-              'rgba(54, 162, 235, 0.6)',
-              'rgba(255, 206, 86, 0.6)',
-              'rgba(75, 192, 192, 0.6)',
-              'rgba(153, 102, 255, 0.6)',
-              'rgba(255, 159, 64, 0.6)'
-            ]
+            backgroundColor:customColors,
+            borderColor:customColors
           }]
         },
         options: {

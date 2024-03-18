@@ -23,8 +23,7 @@ function AppContent() {
   const location = useLocation();
 
   // Define an array of paths where Navbar should not be displayed
-  const hideNavbarPaths = ['/login', '/signup', '/'];
-
+  const hideNavbarPaths = ['/login', '/signup', '/admin', '/adminAnalytics','/']; // Updated to include admin paths
   // Function to check if Navbar should be hidden based on current path
   const shouldHideNavbar = hideNavbarPaths.includes(location.pathname);
 

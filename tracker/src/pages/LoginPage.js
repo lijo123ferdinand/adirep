@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../services/axiosInstance';
 import Swal from 'sweetalert2';
-import "../styles/LoginPage.css"
+// import "../styles/LoginPage.css"
 
 function LoginPage() {
   const [email, setEmail] = useState('');
