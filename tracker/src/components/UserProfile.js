@@ -69,7 +69,7 @@ function UserProfile({ updateTransactions }) {
               <tr key={index}>
                 <td>{transaction.category}</td>
                 <td>{transaction.amount}</td>
-                <td>{transaction.expenseDate}</td>
+                <td>{new Date(transaction.expenseDate).toLocaleDateString()}</td>
                 <td>
                   <DeleteExpense 
                     transactionId={transaction.id} 
