@@ -63,8 +63,8 @@ const ChartContainer = ({ transactions }) => {
           datasets: [{
             label: 'Percentage Spent',
             data: percentages,
-            backgroundColor:customColors,
-            borderColor:customColors
+            backgroundColor: customColors,
+            borderColor: customColors
           }]
         },
         options: {
@@ -85,8 +85,15 @@ const ChartContainer = ({ transactions }) => {
   }, [transactions]);
 
   return (
-    <div className="chart-container">
-      <canvas ref={chartRef}></canvas>
+    <div className="col-15">
+      <div className="card">
+        <div className="card-body">
+          <h5 className="card-title">Expenses Analysis</h5>
+          <div className="chart-container">
+            <canvas ref={chartRef}></canvas>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

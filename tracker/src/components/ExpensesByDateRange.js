@@ -114,16 +114,33 @@ const ExpensesByDateRange = () => {
             className="form-control"
           />
         </div>
-        <div className="col-md-2">
-          <ChartTypeDropdown onChange={handleChartTypeChange} />
-        </div>
+        
+        
         <div className="col-md-2 mt-3"> {/* Adjusted margin-top */}
           <button type="submit" className="btn btn-primary">Get Expenses</button>
         </div>
       </form>
+      <div className="mt-4 expenses-list">
+  <h5>Expenses:</h5>
+  <ul className="list-group">
+    {expenses.map((expense, index) => (
+      <li key={index} className="list-group-item">
+        <div className="d-flex justify-content-between align-items-center">
+          <span>{expense.category}</span>
+          <span>₹ {expense.amount}</span>
+        </div>
+      </li>
+    ))}
+  </ul>
+</div>
+
+      <div className="col-md-4">
+          <ChartTypeDropdown onChange={handleChartTypeChange} />
+        </div>
       <div className="mt-5">
         <canvas id="expenseChart" width="400" height="400"></canvas>
       </div>
+     
     </div>
   );
 };
