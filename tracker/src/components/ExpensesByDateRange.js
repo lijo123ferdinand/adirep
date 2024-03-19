@@ -116,7 +116,7 @@ const ExpensesByDateRange = () => {
         </div>
         
         
-        <div className="col-md-2 mt-3"> {/* Adjusted margin-top */}
+        <div className="col-md-2 mt-5"> {/* Adjusted margin-top */}
           <button type="submit" className="btn btn-primary">Get Expenses</button>
         </div>
       </form>
