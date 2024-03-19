@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../services/axiosInstance';
@@ -10,6 +10,12 @@ function LoginPage() {
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate(); 
+  useEffect(() => {
+    document.body.classList.add('signup-page');
+    return () => {
+      document.body.classList.remove('signup-page');
+    };
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,7 +64,7 @@ function LoginPage() {
         <div className="card-body">
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="email" className="form-label">Email:</label>
+              <label htmlFor="email" className="form-label"style={{ color: 'white' }}>Email:</label>
               <input
                 type="email"
                 id="email"
@@ -70,7 +76,7 @@ function LoginPage() {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="password" className="form-label">Password:</label>
+              <label htmlFor="password" className="form-label"style={{ color: 'white' }}>Password:</label>
               <input
                 type="password"
                 id="password"
@@ -86,7 +92,7 @@ function LoginPage() {
         </div>
         <div className="row justify-content-left mt-3">
           <div className="col-lg-6">
-            <p className="mb-0 text-center">New user? <Link to="/signup">Signup</Link></p>
+            <p className="mb-0 text-center"style={{ color: 'white' }}>New user? <Link to="/signup">Signup</Link></p>
           </div>
         </div> 
       </div>   

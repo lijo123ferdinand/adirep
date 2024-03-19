@@ -1,5 +1,6 @@
 import ExpensesByDateRange from '../components/ExpensesByDateRange';
 import ChartContainer from '../components/ChartContainer';
+import './../styles/AnalyticsPage.css'; // Import the CSS file
 
 function AnalyticsPage() {
   return (
@@ -9,7 +10,7 @@ function AnalyticsPage() {
           <h2>Expenses Analysis</h2>
           <ExpensesByDateRange />
         </div>
-        {/* <div className="col-6">
+        {/* <div className="col-4">
           <ChartContainer />
         </div> */}
       </div>

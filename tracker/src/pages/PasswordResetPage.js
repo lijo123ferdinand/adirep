@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
+import '../styles/PasswordResetPage.css'
 
 function PasswordResetPage() {
   const [newPassword, setNewPassword] = useState('');
@@ -47,7 +48,8 @@ function PasswordResetPage() {
   }  
 
   return (
-    <div className="container mt-5 ">
+    <div className="password-reset-container">
+    <div className="container mt-0 ">
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="card shadow">
@@ -83,6 +85,7 @@ function PasswordResetPage() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
   

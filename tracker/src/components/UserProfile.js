@@ -68,7 +68,7 @@ function UserProfile({ updateTransactions }) {
             {transactions.map((transaction, index) => (
               <tr key={index}>
                 <td>{transaction.category}</td>
-                <td>{transaction.amount}</td>
+                <td>₹ {transaction.amount}</td>
                 <td>{new Date(transaction.expenseDate).toLocaleDateString()}</td>
                 <td>
                   <DeleteExpense 

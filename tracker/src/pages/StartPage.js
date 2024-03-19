@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo from '../styles/PaypulseLogo.jpg'; // Import your app logo image
+import logo from '../styles/StartPage.png'; // Import your app logo image
 import './../styles/StartPage.css';
 
 function StartPage() {

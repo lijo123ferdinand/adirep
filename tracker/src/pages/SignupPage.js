@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-// import "../styles/SignupPage.css"
+import "../styles/SignupPage.css"
 
 function SignupPage() {
   const [email, setEmail] = useState('');
@@ -9,6 +9,12 @@ function SignupPage() {
   const [username, setUsername] = useState('');
   const [balance, setBalance] = useState('');
   const navigate = useNavigate();
+  useEffect(() => {
+    document.body.classList.add('signup-page');
+    return () => {
+      document.body.classList.remove('signup-page');
+    };
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

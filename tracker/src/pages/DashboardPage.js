@@ -4,6 +4,7 @@ import AddExpense from '../components/AddExpense';
 import AddSalary from '../components/AddSalary';
 import DeleteAllExpenses from '../components/DeleteAllExpenses';
 import ChartContainer from '../components/ChartContainer';
+import '../styles/DashboardPage.css';
 
 function DashboardPage() {
   const [userEmail, setUserEmail] = useState('');
