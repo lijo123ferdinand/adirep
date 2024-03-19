@@ -55,8 +55,7 @@ function UserList() {
                       <tr key={expense.id}>
                         <td>{expense.category}</td>
                         <td>{expense.amount}</td>
-                        <td>{expense.expenseDate}</td>
-                      </tr>
+                        <td>{new Date(expense.expenseDate).toLocaleDateString()}</td>                      </tr>
                     ))}
                   </tbody>
                 </table>
