@@ -8,6 +8,8 @@ function SignupPage() {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [balance, setBalance] = useState('');
+  const [usertype, setUsertype] = useState(''); // Add user type state
+
   const navigate = useNavigate();
   useEffect(() => {
     document.body.classList.add('signup-page');
@@ -24,7 +26,9 @@ function SignupPage() {
         email,
         password,
         username,
+        usertype ,
         balance: balance || null 
+        
       });
       console.log('Signup successful:', response.data);
       alert('Signup successful!');
@@ -85,6 +89,21 @@ function SignupPage() {
               className="form-control"
             />
           </div>
+          <div className="mb-3">
+            <label htmlFor="userType" className="form-label">User Type:</label>
+            <select
+              id="userType"
+              value={usertype}
+              onChange={(e) => setUsertype(e.target.value)}
+              className="form-control"
+              required
+            >
+              <option value="">Select user type</option>
+              <option value="parent">parent</option>
+              <option value="kid">kid</option>
+            </select>
+          </div>
+
           <button type="submit" className="btn btn-primary">Sign up</button>
         </form>
         <p className="mt-3 text-center">Already a user? <Link to="/login">Login</Link></p>

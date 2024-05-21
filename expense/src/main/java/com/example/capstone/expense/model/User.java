@@ -32,6 +32,8 @@ public class User {
     private String email;
 
     private String password;
+    private String usertype;
+
 
     @Column(name = "balance")
     private BigDecimal balance;
