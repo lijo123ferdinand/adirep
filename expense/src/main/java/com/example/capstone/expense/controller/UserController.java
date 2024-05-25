@@ -1,6 +1,7 @@
 package com.example.capstone.expense.controller;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -14,9 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.capstone.expense.dto.CreateChildAccountRequest;
 import com.example.capstone.expense.dto.ResetPasswordRequest;
 import com.example.capstone.expense.dto.SalaryRequest;
+import com.example.capstone.expense.dto.SetBudgetRequest;
+import com.example.capstone.expense.model.Budget;
 import com.example.capstone.expense.model.User;
+import com.example.capstone.expense.repository.BudgetRepository;
 import com.example.capstone.expense.repository.UserRepository;
 import com.example.capstone.expense.security.JwtSecretKeyGenerator;
 import com.example.capstone.expense.security.PasswordHashing;
@@ -30,11 +35,11 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class UserController {
     
     private final UserRepository userRepository;
-
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-    
+        private final BudgetRepository budgetRepository;
+        public UserController(UserRepository userRepository, BudgetRepository budgetRepository) {
+            this.userRepository = userRepository;
+            this.budgetRepository = budgetRepository;
+        }
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody User newUser) {
         // Check if user with the same email already exists
@@ -176,5 +181,67 @@ public class UserController {
         userRepository.delete(user);
         
         return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully");
+    }
+    // Create child account
+@PostMapping("/user/createChildAccount")
+public ResponseEntity<String> createChildAccount(@RequestBody CreateChildAccountRequest request) {
+    // Retrieve the parent user by email
+    User parentUser = userRepository.findByEmail(request.getParentEmail());
+    if (parentUser == null) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Parent user not found");
+    }
+
+    // Check if the usertype is "parent"
+    if (!"parent".equals(parentUser.getUsertype())) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only parent users can create child accounts");
+    }
+
+    // Check if child user with the same email already exists
+    User existingChildUser = userRepository.findByEmail(request.getChildEmail());
+    if (existingChildUser != null) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Child user with this email already exists");
+    }
+
+    // Create a new child user
+    User childUser = new User();
+    childUser.setUsername(request.getChildUsername());
+    childUser.setEmail(request.getChildEmail());
+    childUser.setPassword(PasswordHashing.hashPassword(request.getChildPassword()));
+    childUser.setUsertype("child");
+    childUser.setBalance(request.getInitialBalance() != null ? request.getInitialBalance() : BigDecimal.ZERO);
+
+    // Save the child user
+    userRepository.save(childUser);
+
+    return ResponseEntity.status(HttpStatus.CREATED).body("Child account created successfully");
+}
+
+    // Set budget for a category
+    @PostMapping("/user/setBudget")
+    public ResponseEntity<String> setBudget(@RequestBody SetBudgetRequest request) {
+        // Retrieve the user by email
+        User user = userRepository.findByEmail(request.getEmail());
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        // Check if a budget already exists for the given category and user
+        Budget existingBudget = budgetRepository.findByUserAndCategory(user, request.getCategory());
+        if (existingBudget != null) {
+            // Update the existing budget
+            existingBudget.setAmount(request.getAmount());
+            budgetRepository.save(existingBudget);
+        } else {
+            // Create a new budget
+            Budget newBudget = new Budget();
+            newBudget.setUser(user);
+            newBudget.setCategory(request.getCategory());
+            newBudget.setAmount(request.getAmount());
+            newBudget.setStartDate(LocalDate.now());
+            newBudget.setEndDate(LocalDate.now().plusMonths(1)); // Set end date to one month from now (example)
+            budgetRepository.save(newBudget);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body("Budget set successfully");
     }
 }
