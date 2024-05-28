@@ -37,24 +37,25 @@ const ManageKidsPage = () => {
         navigate('/analytics', { state: { childEmail } });
     };
 
-   
-    const handleSetBudget = (childId) => {
-        navigate(`/setbud`);
+    const handleSetBudget = (childEmail) => {
+        navigate('/setbud', { state: { childEmail } });
     };
 
     return (
-        <div className="manage-kids-page-container">
-            <h1>Manage Kids</h1>
+        <div className="container">
+            <h1 className="mt-4 mb-4">Manage Kids</h1>
             {loading ? (
                 <p>Loading...</p>
             ) : (
                 <div>
                     {children.map(child => (
-                        <div key={child.id}>
-                            <p>Child Name: {child.username}</p>
-                            <p>Child Email: {child.email}</p>
-                            <button onClick={() => handleAnalyse(child.email)}>Analyse</button>
-                            <button onClick={handleSetBudget}>Set Budget</button>
+                        <div key={child.id} className="card mb-3">
+                            <div className="card-body">
+                                <h5 className="card-title">Child Name: {child.username}</h5>
+                                <h6 className="card-subtitle mb-2 text-muted">Child Email: {child.email}</h6>
+                                <button className="btn btn-primary me-2" onClick={() => handleAnalyse(child.email)}>Analyse</button>
+                                <button className="btn btn-success" onClick={() => handleSetBudget(child.email)}>Set Budget</button>
+                            </div>
                         </div>
                     ))}
                 </div>

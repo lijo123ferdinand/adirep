@@ -33,7 +33,6 @@ function AddExpense() {
     }
   };
   
-  
   return (
     <div className="container border p-4 shadow-lg">
       <h2 className="fw-bold">Add Expense</h2>

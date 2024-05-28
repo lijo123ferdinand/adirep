@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
+import '../styles/ParentPage.css'; // Import the CSS file for styling
 
 const ParentPage = () => {
     const [childName, setChildName] = useState('');
@@ -34,10 +35,10 @@ const ParentPage = () => {
     };
 
     return (
-        <div>
+        <div className="parent-page-container"> {/* Apply parent-page-container class */}
             <h1>Create Child Account</h1>
-            <form onSubmit={handleSubmit}>
-                <div>
+            <form onSubmit={handleSubmit} className="parent-form"> {/* Apply parent-form class */}
+                <div className="form-group"> {/* Apply form-group class */}
                     <label htmlFor="childName">Child Name:</label>
                     <input
                         type="text"
@@ -45,9 +46,10 @@ const ParentPage = () => {
                         value={childName}
                         onChange={(e) => setChildName(e.target.value)}
                         required
+                        className="form-control" // Apply form-control class
                     />
                 </div>
-                <div>
+                <div className="form-group"> {/* Apply form-group class */}
                     <label htmlFor="childEmail">Child Email:</label>
                     <input
                         type="email"
@@ -55,9 +57,10 @@ const ParentPage = () => {
                         value={childEmail}
                         onChange={(e) => setChildEmail(e.target.value)}
                         required
+                        className="form-control" // Apply form-control class
                     />
                 </div>
-                <div>
+                <div className="form-group"> {/* Apply form-group class */}
                     <label htmlFor="password">Password:</label>
                     <input
                         type="password"
@@ -65,9 +68,10 @@ const ParentPage = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
+                        className="form-control" // Apply form-control class
                     />
                 </div>
-                <div>
+                <div className="form-group"> {/* Apply form-group class */}
                     <label htmlFor="initialBalance">Initial Balance:</label>
                     <input
                         type="number"
@@ -75,9 +79,10 @@ const ParentPage = () => {
                         value={initialBalance}
                         onChange={(e) => setInitialBalance(parseFloat(e.target.value))}
                         required
+                        className="form-control" // Apply form-control class
                     />
                 </div>
-                <button type="submit">Create Child Account</button>
+                <button type="submit" className="btn btn-primary">Create Child Account</button> {/* Apply btn and btn-primary classes */}
             </form>
         </div>
     );

@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Chart from 'chart.js/auto';
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode }from 'jwt-decode';
+import '../styles/ChartContainer.css'; // Import custom styles
 
 const ChartContainer = ({ transactions }) => {
   const [username, setUsername] = useState('');
   const chartRef = useRef(null);
-  const chartInstanceRef = useRef(null); // Ref to store the chart instance
+  const chartInstanceRef = useRef(null);
 
   const fetchData = async () => {
     try {
@@ -20,14 +21,13 @@ const ChartContainer = ({ transactions }) => {
       });
       setUsername(response.data.username);
       console.log(username);
-      // Split the response body by lines
+
       const lines = response.data.trim().split('\n');
       lines.shift();
 
-      // Extract category name and percentage spent from each line
       const dataArray = lines.map(line => {
         const [category, percentage] = line.split(':');
-        return { category: category.trim(), percentageSpent: parseFloat(percentage) }; // Convert percentage to float
+        return { category: category.trim(), percentageSpent: parseFloat(percentage) };
       });
 
       return dataArray;
@@ -50,7 +50,6 @@ const ChartContainer = ({ transactions }) => {
       const labels = analysisData.map(item => item.category);
       const percentages = analysisData.map(item => item.percentageSpent);
 
-      // Destroy previous chart instance if exists
       if (chartInstanceRef.current) {
         chartInstanceRef.current.destroy();
       }
@@ -76,7 +75,6 @@ const ChartContainer = ({ transactions }) => {
 
     renderChart();
 
-    // Clean up function to destroy the chart instance when component unmounts
     return () => {
       if (chartInstanceRef.current) {
         chartInstanceRef.current.destroy();
@@ -86,9 +84,9 @@ const ChartContainer = ({ transactions }) => {
 
   return (
     <div className="col-15">
-      <div className="card">
+      <div className="card shadow-lg mb-4">
         <div className="card-body">
-          <h5 className="card-title">Expenses Analysis</h5>
+          <h5 className="card-title text-primary">Expenses Analysis</h5>
           <div className="chart-container">
             <canvas ref={chartRef}></canvas>
           </div>

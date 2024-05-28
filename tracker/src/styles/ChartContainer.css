@@ -1,0 +1,27 @@
+/* ChartContainer.css */
+
+.card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    border: none;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.chart-container {
+    position: relative;
+    height: 400px;
+}
+
+canvas {
+    max-width: 100%;
+    border-radius: 8px;
+}
+
+.text-primary {
+    color: #007bff !important;
+}

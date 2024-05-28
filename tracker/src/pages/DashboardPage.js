@@ -25,38 +25,34 @@ function DashboardPage() {
   }, []);
 
   return (
-    <div className="card-container p-4">
-      <div className="container-fluid dashboard-container">
-        <div className="row">
-          <div className="col-md-7">
-            <div className="card user-profile" style={{ maxHeight: 'calc(100vh - 80px)', overflowY: 'auto' }}>
+    <div className="container-fluid py-5" style={{ backgroundColor: '#f0f8ff' }}>
+      <div className="row">
+        <div className="col-md-8">
+          <div className="card mb-4" style={{ backgroundColor: '#e6f7ff', borderColor: '#007bff' }}>
+            <div className="card-body">
               <UserProfile userEmail={userEmail} updateTransactions={updateTransactions} />
             </div>
-            <div className="card-container">
-            <ChartContainer transactions={transactions} />
+          </div>
+          <div className="card mb-4" style={{ backgroundColor: '#fff3e6', borderColor: '#ffa500' }}>
+            <div className="card-body">
+              <ChartContainer transactions={transactions} />
             </div>
           </div>
-          <div className="col-md-5">
-            <div className="row">
-              <div className="col">
-                <div className="card add-expense" style={{ marginBottom: '10px' }}>
-                  <AddExpense />
-                </div>
-              </div>
+        </div>
+        <div className="col-md-4">
+          <div className="card mb-4" style={{ backgroundColor: '#e6ffe6', borderColor: '#28a745' }}>
+            <div className="card-body">
+              <AddExpense />
             </div>
-            <div className="row">
-              <div className="col">
-                <div className="card add-salary" style={{ marginBottom: '10px' }}>
-                  <AddSalary />
-                </div>
-              </div>
+          </div>
+          <div className="card mb-4" style={{ backgroundColor: '#fff5f5', borderColor: '#ff6347' }}>
+            <div className="card-body">
+              <AddSalary />
             </div>
-            <div className="row">
-              <div className="col">
-                <div className="card delete-all-expenses">
-                  <DeleteAllExpenses />
-                </div>
-              </div>
+          </div>
+          <div className="card mb-4" style={{ backgroundColor: '#f2e6ff', borderColor: '#8a2be2' }}>
+            <div className="card-body">
+              <DeleteAllExpenses />
             </div>
           </div>
         </div>
