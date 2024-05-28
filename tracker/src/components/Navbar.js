@@ -26,6 +26,9 @@ function NavBar() { // Pass isAdmin as a prop
             <li className="nav-item">
               <Link className="nav-link" to="/analytics">Analytics</Link>
             </li>
+            <li className="nav-item"> {/* Add the new list item for Manage Kids page */}
+              <Link className="nav-link" to="/managekids">Manage Kids</Link>
+            </li>
             {/* {isAdmin && ( // Render Admin Analytics link only if isAdmin is true
               <li className="nav-item"> 
                 <Link className="nav-link" to="/adminAnalytics">Admin Analytics</Link>

@@ -8,7 +8,7 @@ function SignupPage() {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [balance, setBalance] = useState('');
-  const [usertype, setUsertype] = useState(''); // Add user type state
+  const [usertype, setUsertype] = useState('parent'); // Set default user type to 'parent'
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -89,21 +89,6 @@ function SignupPage() {
               className="form-control"
             />
           </div>
-          <div className="mb-3">
-            <label htmlFor="userType" className="form-label">User Type:</label>
-            <select
-              id="userType"
-              value={usertype}
-              onChange={(e) => setUsertype(e.target.value)}
-              className="form-control"
-              required
-            >
-              <option value="">Select user type</option>
-              <option value="parent">parent</option>
-              <option value="kid">kid</option>
-            </select>
-          </div>
-
           <button type="submit" className="btn btn-primary">Sign up</button>
         </form>
         <p className="mt-3 text-center">Already a user? <Link to="/login">Login</Link></p>

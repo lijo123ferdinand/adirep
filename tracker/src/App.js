@@ -11,7 +11,7 @@ import AdminDashboardPage from './pages/AdminDashboardPage';
 import AdminAnalyticsPage from './pages/AdminAnalyticsPage';
 import ParentPage from './pages/ParentPage'; // Correct import
 import SetBudgetPage from './pages/SetBudgetPage';
-
+import ManageKidsPage from './pages/ManageKidsPage';
 function App() {
   return (
     <Router> {/* Wrap the entire App component with the Router component */}
@@ -44,6 +44,8 @@ function AppContent() {
         <Route exact path="/adminAnalytics" element={<AdminAnalyticsPage />} />
         <Route exact path="/parent" element={<ParentPage />} />
         <Route exact path="/setbud" element={<SetBudgetPage />} />
+        <Route exact path="/managekids" element={<ManageKidsPage />} />
+
 
 
 

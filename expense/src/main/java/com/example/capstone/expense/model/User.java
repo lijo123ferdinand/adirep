@@ -33,6 +33,8 @@ public class User {
 
     private String password;
     private String usertype;
+    private Long parentId; // Add this field
+
 
 
     @Column(name = "balance")

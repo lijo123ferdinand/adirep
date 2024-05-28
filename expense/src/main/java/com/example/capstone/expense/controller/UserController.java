@@ -4,7 +4,12 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Objects;
-
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+// import org.hibernate.mapping.List;
+// import org.hibernate.mapping.List;
+// import org.hibernate.mapping.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -182,41 +187,55 @@ public class UserController {
         
         return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully");
     }
-    // Create child account
-@PostMapping("/user/createChildAccount")
-public ResponseEntity<String> createChildAccount(@RequestBody CreateChildAccountRequest request) {
-    // Retrieve the parent user by email
-    User parentUser = userRepository.findByEmail(request.getParentEmail());
-    if (parentUser == null) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Parent user not found");
+    @GetMapping("/user/getChildren")
+    public ResponseEntity<Map<String, List<User>>> getChildren(@RequestParam String parentEmail) {
+        User parentUser = userRepository.findByEmail(parentEmail);
+        if (parentUser == null || !"parent".equals(parentUser.getUsertype())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
+    
+        List<User> children = userRepository.findByParentId(parentUser.getId());
+        Map<String, List<User>> response = new HashMap<>();
+        response.put("children", children);
+    
+        return ResponseEntity.ok(response);
+    }
+    
+
+    @PostMapping("/user/createChildAccount")
+    public ResponseEntity<String> createChildAccount(@RequestBody CreateChildAccountRequest request) {
+        // Retrieve the parent user by email
+        User parentUser = userRepository.findByEmail(request.getParentEmail());
+        if (parentUser == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Parent user not found");
+        }
+
+        // Check if the usertype is "parent"
+        if (!"parent".equals(parentUser.getUsertype())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only parent users can create child accounts");
+        }
+
+        // Check if child user with the same email already exists
+        User existingChildUser = userRepository.findByEmail(request.getChildEmail());
+        if (existingChildUser != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Child user with this email already exists");
+        }
+
+        // Create a new child user
+        User childUser = new User();
+        childUser.setUsername(request.getChildUsername());
+        childUser.setEmail(request.getChildEmail());
+        childUser.setPassword(PasswordHashing.hashPassword(request.getChildPassword()));
+        childUser.setUsertype("child");
+        childUser.setBalance(request.getInitialBalance() != null ? request.getInitialBalance() : BigDecimal.ZERO);
+        childUser.setParentId(parentUser.getId()); // Store the parent user ID
+
+        // Save the child user
+        userRepository.save(childUser);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Child account created successfully");
     }
 
-    // Check if the usertype is "parent"
-    if (!"parent".equals(parentUser.getUsertype())) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only parent users can create child accounts");
-    }
-
-    // Check if child user with the same email already exists
-    User existingChildUser = userRepository.findByEmail(request.getChildEmail());
-    if (existingChildUser != null) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Child user with this email already exists");
-    }
-
-    // Create a new child user
-    User childUser = new User();
-    childUser.setUsername(request.getChildUsername());
-    childUser.setEmail(request.getChildEmail());
-    childUser.setPassword(PasswordHashing.hashPassword(request.getChildPassword()));
-    childUser.setUsertype("child");
-    childUser.setBalance(request.getInitialBalance() != null ? request.getInitialBalance() : BigDecimal.ZERO);
-
-    // Save the child user
-    userRepository.save(childUser);
-
-    return ResponseEntity.status(HttpStatus.CREATED).body("Child account created successfully");
-}
-
-   // Set budget for a category
 @PostMapping("/user/setBudget")
 public ResponseEntity<String> setBudget(@RequestBody SetBudgetRequest request) {
     // Retrieve the user by email

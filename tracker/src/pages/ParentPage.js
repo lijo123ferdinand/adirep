@@ -6,6 +6,7 @@ const ParentPage = () => {
     const [childName, setChildName] = useState('');
     const [childEmail, setChildEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [initialBalance, setInitialBalance] = useState(0); // State for initial balance
     const location = useLocation();
     const parentEmail = location.state.userEmail;
 
@@ -18,7 +19,7 @@ const ParentPage = () => {
                 childUsername: childName,
                 childEmail: childEmail,
                 childPassword: password,
-                initialBalance: 0 // You can set initial balance if needed
+                initialBalance: initialBalance // Pass initial balance to the request
             });
             console.log(response.data); // Log the response
             // Handle success, maybe redirect or show a success message
@@ -63,6 +64,16 @@ const ParentPage = () => {
                         id="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                </div>
+                <div>
+                    <label htmlFor="initialBalance">Initial Balance:</label>
+                    <input
+                        type="number"
+                        id="initialBalance"
+                        value={initialBalance}
+                        onChange={(e) => setInitialBalance(parseFloat(e.target.value))}
                         required
                     />
                 </div>
