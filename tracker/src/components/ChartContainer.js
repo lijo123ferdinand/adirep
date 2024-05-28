@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Chart from 'chart.js/auto';
 import axios from 'axios';
-import {jwtDecode }from 'jwt-decode';
-import '../styles/ChartContainer.css'; // Import custom styles
-
+import '../styles/ChartContainer.css';
+import { jwtDecode } from 'jwt-decode';
 const ChartContainer = ({ transactions }) => {
   const [username, setUsername] = useState('');
   const chartRef = useRef(null);
@@ -20,7 +19,6 @@ const ChartContainer = ({ transactions }) => {
         }
       });
       setUsername(response.data.username);
-      console.log(username);
 
       const lines = response.data.trim().split('\n');
       lines.shift();
@@ -68,7 +66,24 @@ const ChartContainer = ({ transactions }) => {
         },
         options: {
           responsive: true,
-          maintainAspectRatio: false
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'bottom',
+              labels: {
+                boxWidth: 20,
+                padding: 15
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(tooltipItem) {
+                  return `${tooltipItem.label}: ${tooltipItem.raw}%`;
+                }
+              }
+            }
+          }
         }
       });
     };
@@ -83,10 +98,13 @@ const ChartContainer = ({ transactions }) => {
   }, [transactions]);
 
   return (
-    <div className="col-15">
-      <div className="card shadow-lg mb-4">
+    <div className="chart-card-container">
+      <div className="card chart-card shadow-sm mb-4">
         <div className="card-body">
           <h5 className="card-title text-primary">Expenses Analysis</h5>
+          <p className="card-text text-secondary">
+            A breakdown of your expenses by category. Each slice of the pie chart represents the percentage of total spending for each category.
+          </p>
           <div className="chart-container">
             <canvas ref={chartRef}></canvas>
           </div>

@@ -1,27 +1,37 @@
 /* ChartContainer.css */
 
-.card {
-    background-color: #ffffff;
-    border-radius: 8px;
+.chart-card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.chart-card {
+    border-radius: 10px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f8fafc, #e9ecef);
     border: none;
 }
 
 .card-title {
     font-size: 1.5rem;
-    color: #007bff;
     font-weight: bold;
+    color: #007bff;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #6c757d;
+    margin-bottom: 1.5rem;
 }
 
 .chart-container {
     position: relative;
     height: 400px;
+    width: 100%;
 }
 
-canvas {
-    max-width: 100%;
-    border-radius: 8px;
-}
-
-.text-primary {
-    color: #007bff !important;
+.shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
 }

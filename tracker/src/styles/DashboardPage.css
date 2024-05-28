@@ -5,3 +5,58 @@
   background-position: center;
   background-size:130%;
 }
+/* DashboardPage.css */
+
+.bg-light-blue {
+  background-color: #f0f8ff;
+}
+
+.card-light-blue {
+  background-color: #e6f7ff;
+}
+
+.card-light-orange {
+  background-color: #fff3e6;
+}
+
+.card-light-green {
+  background-color: #e6ffe6;
+}
+
+.card-light-red {
+  background-color: #fff5f5;
+}
+
+.card-light-purple {
+  background-color: #f2e6ff;
+}
+
+.card {
+  border-width: 2px;
+}
+
+.card .card-body {
+  padding: 1.5rem;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.text-primary {
+  color: #007bff !important;
+}
+
+.shadow-lg {
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+}

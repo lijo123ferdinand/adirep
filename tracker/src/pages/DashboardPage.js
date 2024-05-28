@@ -5,6 +5,7 @@ import AddSalary from '../components/AddSalary';
 import DeleteAllExpenses from '../components/DeleteAllExpenses';
 import ChartContainer from '../components/ChartContainer';
 import '../styles/DashboardPage.css';
+import ChartWithCrosshair from '../components/ChartWithCrosshair';
 
 function DashboardPage() {
   const [userEmail, setUserEmail] = useState('');
@@ -15,7 +16,6 @@ function DashboardPage() {
   };
 
   useEffect(() => {
-    // Retrieve user email from local storage
     const email = localStorage.getItem('userEmail');
     if (email) {
       setUserEmail(email);
@@ -25,35 +25,38 @@ function DashboardPage() {
   }, []);
 
   return (
-    <div className="container-fluid py-5" style={{ backgroundColor: '#f0f8ff' }}>
+    <div className="container-fluid py-5 bg-light-blue">
       <div className="row">
-        <div className="col-md-8">
-          <div className="card mb-4" style={{ backgroundColor: '#e6f7ff', borderColor: '#007bff' }}>
+        <div className="col-md-8 mb-4">
+          <div className="card shadow-lg mb-4 card-light-blue border-primary">
             <div className="card-body">
               <UserProfile userEmail={userEmail} updateTransactions={updateTransactions} />
             </div>
           </div>
-          <div className="card mb-4" style={{ backgroundColor: '#fff3e6', borderColor: '#ffa500' }}>
+          <div className="card shadow-lg mb-4 card-light-orange border-warning">
             <div className="card-body">
               <ChartContainer transactions={transactions} />
             </div>
           </div>
         </div>
         <div className="col-md-4">
-          <div className="card mb-4" style={{ backgroundColor: '#e6ffe6', borderColor: '#28a745' }}>
+          <div className="card shadow-lg mb-4 card-light-green border-success">
             <div className="card-body">
               <AddExpense />
             </div>
           </div>
-          <div className="card mb-4" style={{ backgroundColor: '#fff5f5', borderColor: '#ff6347' }}>
+          <div className="card shadow-lg mb-4 card-light-red border-danger">
             <div className="card-body">
               <AddSalary />
             </div>
           </div>
-          <div className="card mb-4" style={{ backgroundColor: '#f2e6ff', borderColor: '#8a2be2' }}>
+          <div className="card shadow-lg mb-4 card-light-purple border-info">
             <div className="card-body">
               <DeleteAllExpenses />
             </div>
+            <div className="chart-container">
+        <ChartWithCrosshair />
+      </div>
           </div>
         </div>
       </div>
