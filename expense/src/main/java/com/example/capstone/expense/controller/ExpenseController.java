@@ -30,8 +30,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.capstone.expense.dto.ExpenseRequest;
+import com.example.capstone.expense.model.Budget;
 import com.example.capstone.expense.model.Expense;
 import com.example.capstone.expense.model.User;
+import com.example.capstone.expense.repository.BudgetRepository;
 import com.example.capstone.expense.repository.ExpenseRepository;
 import com.example.capstone.expense.repository.UserRepository;
 
@@ -43,10 +45,13 @@ public class ExpenseController {
     
     private final UserRepository userRepository;
     private final ExpenseRepository expenseRepository;
+    private final BudgetRepository budgetRepository;
 
-    public ExpenseController(UserRepository userRepository, ExpenseRepository expenseRepository) {
+
+    public ExpenseController(UserRepository userRepository, ExpenseRepository expenseRepository,BudgetRepository budgetRepository) {
         this.userRepository = userRepository;
         this.expenseRepository = expenseRepository;
+        this.budgetRepository =budgetRepository;
     }
 
     // Retrieve expenses by user email
@@ -114,44 +119,48 @@ public class ExpenseController {
         return result;
     }
 
-    // Add expense to a user  
     @PostMapping("/user/expenses")
     public ResponseEntity<String> addExpense(@RequestBody ExpenseRequest expenseRequest) {
-        // Retrieve the user by email
         User user = userRepository.findByEmail(expenseRequest.getEmail());
         if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
-
-         // Check if the user has sufficient balance
+    
+        Budget budget = budgetRepository.findByUserAndCategory(user, expenseRequest.getCategory());
+        if (budget != null) {
+            BigDecimal expenseAmount = expenseRequest.getAmount();
+            BigDecimal availableAmount = budget.getAvailableAmount();
+    
+            if (expenseAmount.compareTo(availableAmount) > 0) {
+                return ResponseEntity.badRequest().body("Expense exceeds budget limit");
+            }
+    
+            budget.setAvailableAmount(availableAmount.subtract(expenseAmount));
+            budgetRepository.save(budget);
+        }
+    
         BigDecimal expenseAmount = expenseRequest.getAmount();
         BigDecimal currentBalance = user.getBalance();
         if (currentBalance.compareTo(expenseAmount) < 0) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Insufficient balance");
+            return ResponseEntity.badRequest().body("Insufficient balance");
         }
-
-        // Update the user's balance
+    
         BigDecimal newBalance = currentBalance.subtract(expenseAmount);
         user.setBalance(newBalance);
-
-        // Create a new Expense object
+    
         Expense newExpense = new Expense();
         newExpense.setUser(user);
         newExpense.setCategory(expenseRequest.getCategory());
         newExpense.setAmount(expenseRequest.getAmount());
-
-        // Convert LocalDate to Date
-        Date expenseDate = Date.valueOf(LocalDate.now());
-        newExpense.setExpenseDate(expenseDate);
-
-        // Save the new expense
+        newExpense.setExpenseDate(Date.valueOf(LocalDate.now()));
+    
         expenseRepository.save(newExpense);
-
-         // Save the updated user balance
         userRepository.save(user);
-
+    
         return ResponseEntity.status(HttpStatus.CREATED).body("Expense added successfully");
     }
+    
+
 
     @Transactional
     @DeleteMapping("/user/expenses/deleteAllExpenses")

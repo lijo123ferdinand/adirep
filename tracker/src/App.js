@@ -9,6 +9,8 @@ import StartPage from './pages/StartPage';
 import PasswordResetPage from './pages/PasswordResetPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import AdminAnalyticsPage from './pages/AdminAnalyticsPage';
+import ParentPage from './pages/ParentPage'; // Correct import
+import SetBudgetPage from './pages/SetBudgetPage';
 
 function App() {
   return (
@@ -40,6 +42,11 @@ function AppContent() {
         <Route exact path="/analytics" element={<AnalyticsPage />} />
         <Route exact path="/admin" element={<AdminDashboardPage />} />
         <Route exact path="/adminAnalytics" element={<AdminAnalyticsPage />} />
+        <Route exact path="/parent" element={<ParentPage />} />
+        <Route exact path="/setbud" element={<SetBudgetPage />} />
+
+
+
 
       </Routes>
     </>

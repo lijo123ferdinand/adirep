@@ -25,9 +25,14 @@ function AddExpense() {
       console.log('Expense added successfully');
       console.log(response.data);
     } catch (error) {
+      if (error.response && error.response.status === 400 && error.response.data === "Expense exceeds budget limit") {
+        alert('Oops! Expense exceeds budget limit.');
+      } else {
         alert('Oops! Insufficient Balance.');
       }
+    }
   };
+  
   
   return (
     <div className="container border p-4 shadow-lg">

@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import DeleteExpense from './DeleteExpense';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
 
 function UserProfile({ updateTransactions }) {
   const [username, setUsername] = useState('');
   const [balance, setBalance] = useState('');
   const [userEmail, setUserEmail] = useState('');
+  const [userType, setUserType] = useState('');
   const [transactions, setTransactions] = useState([]);
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   useEffect(() => {
     fetchUserProfile();
@@ -34,6 +37,7 @@ function UserProfile({ updateTransactions }) {
       console.log(response.data);
       setUsername(response.data.username);
       setBalance(response.data.balance);
+      setUserType(response.data.usertype);
       setTransactions(response.data.expenses.reverse() || []); 
     } catch (error) {
       console.error('Error fetching user profile:', error);
@@ -46,6 +50,9 @@ function UserProfile({ updateTransactions }) {
     // Update transactions state in DashboardPage
     updateTransactions(updatedTransactions);
   };
+  const handleCreateChildAccount = () => {
+    navigate(`/Parent`, { state: { userEmail } }); // Pass email as state
+};
   
 
   return (
@@ -53,6 +60,10 @@ function UserProfile({ updateTransactions }) {
       <h2 className="fw-bold">Hi {username}</h2>
       <div>
         <h3>Total amount available: <span className="text-muted">{balance}</span></h3>
+        <h3>User Type: <span className="text-muted">{userType}</span></h3>
+        {userType === 'parent' && ( // Conditionally render "Create Child Account" button
+          <button onClick={handleCreateChildAccount}>Create Child Account</button>
+        )}
       </div>
       <h3>Transactions</h3>
       <div className="table-responsive">

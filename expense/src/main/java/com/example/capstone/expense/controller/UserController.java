@@ -216,32 +216,38 @@ public ResponseEntity<String> createChildAccount(@RequestBody CreateChildAccount
     return ResponseEntity.status(HttpStatus.CREATED).body("Child account created successfully");
 }
 
-    // Set budget for a category
-    @PostMapping("/user/setBudget")
-    public ResponseEntity<String> setBudget(@RequestBody SetBudgetRequest request) {
-        // Retrieve the user by email
-        User user = userRepository.findByEmail(request.getEmail());
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-        }
-
-        // Check if a budget already exists for the given category and user
-        Budget existingBudget = budgetRepository.findByUserAndCategory(user, request.getCategory());
-        if (existingBudget != null) {
-            // Update the existing budget
-            existingBudget.setAmount(request.getAmount());
-            budgetRepository.save(existingBudget);
-        } else {
-            // Create a new budget
-            Budget newBudget = new Budget();
-            newBudget.setUser(user);
-            newBudget.setCategory(request.getCategory());
-            newBudget.setAmount(request.getAmount());
-            newBudget.setStartDate(LocalDate.now());
-            newBudget.setEndDate(LocalDate.now().plusMonths(1)); // Set end date to one month from now (example)
-            budgetRepository.save(newBudget);
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body("Budget set successfully");
+   // Set budget for a category
+@PostMapping("/user/setBudget")
+public ResponseEntity<String> setBudget(@RequestBody SetBudgetRequest request) {
+    // Retrieve the user by email
+    User user = userRepository.findByEmail(request.getEmail());
+    if (user == null) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
     }
+
+    // Check if a budget already exists for the given category and user
+    Budget existingBudget = budgetRepository.findByUserAndCategory(user, request.getCategory());
+    if (existingBudget != null) {
+        // Update the existing budget
+        existingBudget.setAmount(request.getAmount());
+        existingBudget.setAvailableAmount(request.getAmount()); // Set available balance
+        existingBudget.setStartDate(request.getStartDate());
+        existingBudget.setEndDate(request.getEndDate());
+        budgetRepository.save(existingBudget);
+    } else {
+        // Create a new budget
+        Budget newBudget = new Budget();
+        newBudget.setUser(user);
+        newBudget.setCategory(request.getCategory());
+        newBudget.setAmount(request.getAmount());
+        newBudget.setAvailableAmount(request.getAmount()); // Set available balance
+        newBudget.setStartDate(request.getStartDate());
+        newBudget.setEndDate(request.getEndDate());
+        budgetRepository.save(newBudget);
+    }
+
+    return ResponseEntity.status(HttpStatus.OK).body("Budget set successfully");
+}
+
+    
 }

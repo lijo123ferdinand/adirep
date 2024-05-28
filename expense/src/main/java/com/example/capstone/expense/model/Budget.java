@@ -1,6 +1,5 @@
 package com.example.capstone.expense.model;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,6 +27,9 @@ public class Budget {
 
     @Column(nullable = false)
     private BigDecimal amount;
+
+    @Column(name = "available_amt", nullable = false)
+    private BigDecimal availableAmount; // New column
 
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
