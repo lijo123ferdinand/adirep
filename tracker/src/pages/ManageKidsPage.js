@@ -34,7 +34,12 @@ const ManageKidsPage = () => {
     }, []);
 
     const handleAnalyse = (childEmail) => {
-        navigate(`/analytics?email=${childEmail}`);
+        navigate('/analytics', { state: { childEmail } });
+    };
+
+   
+    const handleSetBudget = (childId) => {
+        navigate(`/setbud`);
     };
 
     return (
@@ -49,7 +54,7 @@ const ManageKidsPage = () => {
                             <p>Child Name: {child.username}</p>
                             <p>Child Email: {child.email}</p>
                             <button onClick={() => handleAnalyse(child.email)}>Analyse</button>
-                            {/* Add other buttons as needed */}
+                            <button onClick={handleSetBudget}>Set Budget</button>
                         </div>
                     ))}
                 </div>
