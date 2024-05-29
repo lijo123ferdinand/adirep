@@ -24,6 +24,8 @@ function AddExpense() {
       });
       console.log('Expense added successfully');
       console.log(response.data);
+      // Display success message
+      alert('Expense added successfully!');
     } catch (error) {
       if (error.response && error.response.status === 400 && error.response.data === "Expense exceeds budget limit") {
         alert('Oops! Expense exceeds budget limit.');
@@ -34,7 +36,7 @@ function AddExpense() {
   };
   
   return (
-    <div className="container border p-4 shadow-lg">
+    <div className="container border p-4 shadow-lg mt-5">
       <h2 className="fw-bold">Add Expense</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">

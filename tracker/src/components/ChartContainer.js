@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Chart from 'chart.js/auto';
 import axios from 'axios';
-import '../styles/ChartContainer.css';
 import { jwtDecode } from 'jwt-decode';
+
 const ChartContainer = ({ transactions }) => {
   const [username, setUsername] = useState('');
   const chartRef = useRef(null);
@@ -51,6 +51,7 @@ const ChartContainer = ({ transactions }) => {
       if (chartInstanceRef.current) {
         chartInstanceRef.current.destroy();
       }
+
       const customColors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF8A80', '#A1887F', '#4DD0E1', '#FF5722', '#009688', '#FF1744', '#00E676', '#FF4081', '#18FFFF', '#651FFF', '#FF6E40', '#FFD740', '#7C4DFF', '#1DE9B6', '#C51162', '#FF5252', '#2962FF', '#FFD740', '#64DD17', '#FFAB00', '#FF1744', '#00B8D4', '#FF6D00', '#FFEA00', '#00C853'];
 
       chartInstanceRef.current = new Chart(ctx, {
@@ -98,15 +99,12 @@ const ChartContainer = ({ transactions }) => {
   }, [transactions]);
 
   return (
-    <div className="chart-card-container">
+    <div className="container">
       <div className="card chart-card shadow-sm mb-4">
         <div className="card-body">
           <h5 className="card-title text-primary">Expenses Analysis</h5>
-          <p className="card-text text-secondary">
-            A breakdown of your expenses by category. Each slice of the pie chart represents the percentage of total spending for each category.
-          </p>
           <div className="chart-container">
-            <canvas ref={chartRef}></canvas>
+            <canvas ref={chartRef} width="50" height="50"></canvas>
           </div>
         </div>
       </div>

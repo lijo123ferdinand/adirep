@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode'; // Ensure this import is correct
+import {jwtDecode }from 'jwt-decode'; // Ensure this import is correct
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { useNavigate } from 'react-router-dom';
 
 const SetBudgetPage = () => {
     const location = useLocation();
     const { childEmail } = location.state || {}; // Destructure childEmail from location state
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         userId: '', // userId will be set on the backend
@@ -16,6 +20,7 @@ const SetBudgetPage = () => {
         endDate: ''
     });
     const [message, setMessage] = useState('');
+    const [showSuccessPopup, setShowSuccessPopup] = useState(false); // State for success popup visibility
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -42,9 +47,17 @@ const SetBudgetPage = () => {
         try {
             const response = await axios.post('http://localhost:8086/api/user/setBudget', formData);
             setMessage(response.data.message);
+            setShowSuccessPopup(true); // Show success popup
         } catch (error) {
             setMessage(error.response.data.message);
         }
+    };
+
+    const handleClosePopup = () => {
+        setShowSuccessPopup(false);
+        setMessage('');
+        navigate('/managekids')
+        // Optionally clear the message
     };
 
     return (
@@ -74,6 +87,26 @@ const SetBudgetPage = () => {
 
                 <button type="submit" className="btn btn-primary">Set Budget</button>
             </form>
+
+            {/* Success Popup Modal */}
+            {showSuccessPopup && (
+                <div className="modal show d-block" tabIndex="-1" role="dialog">
+                    <div className="modal-dialog" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Success</h5>
+                                <button type="button" className="btn-close" aria-label="Close" onClick={handleClosePopup}></button>
+                            </div>
+                            <div className="modal-body">
+                                <p>Budget set successfully!</p>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-primary" onClick={handleClosePopup}>OK</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

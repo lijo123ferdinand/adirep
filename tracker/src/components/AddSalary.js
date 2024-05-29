@@ -30,7 +30,7 @@ function AddSalary() {
   };
 
   return (
-    <div className="container border p-4 shadow-lg">
+    <div className="container border p-4 shadow-lg mt-5">
       <h2 className="fw-bold">Add Salary</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
@@ -49,6 +49,5 @@ function AddSalary() {
     </div>
   );
 }
-
 
 export default AddSalary;

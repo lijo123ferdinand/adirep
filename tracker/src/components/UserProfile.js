@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DeleteExpense from './DeleteExpense';
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode'; // Corrected the import for jwtDecode
 import { useNavigate } from 'react-router-dom';
 import '../styles/UserProfile.css'; // Import custom styles
 
@@ -36,19 +36,26 @@ function UserProfile({ updateTransactions }) {
             setBalance(response.data.balance);
             setUserType(response.data.usertype);
             setTransactions(response.data.expenses.reverse() || []);
+
+            // Redirect if user type is 'child'
+            if (response.data.usertype === 'child') {
+                setTimeout(() => {
+                    navigate('/child');
+                }, 500); // Redirect after 3 seconds
+            }
         } catch (error) {
             console.error('Error fetching user profile:', error);
         }
     };
 
     const handleDeleteExpense = (transactionId) => {
-        setTransactions(transactions.filter(transaction => transaction.id !== transactionId));
         const updatedTransactions = transactions.filter(transaction => transaction.id !== transactionId);
+        setTransactions(updatedTransactions);
         updateTransactions(updatedTransactions);
     };
 
     const handleCreateChildAccount = () => {
-        navigate(`/Parent`, { state: { userEmail } });
+        navigate('/parent', { state: { userEmail } });
     };
 
     return (

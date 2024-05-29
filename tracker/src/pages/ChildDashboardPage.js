@@ -4,7 +4,7 @@ import ChartContainer from '../components/ChartContainer';
 import ChartWithCrosshair from '../components/ChartWithCrosshair';
 import '../styles/DashboardPage.css';
 
-function DashboardPage() {
+function ChildDashboardPage() {
   const [userEmail, setUserEmail] = useState('');
   const [transactions, setTransactions] = useState([]);
 
@@ -28,18 +28,14 @@ function DashboardPage() {
       </div>
       <div className="right-panel">
         <div className="chart-card">
-          <div className="chart-wrapper">
-            <ChartContainer transactions={transactions} />
-          </div>
+          <ChartContainer transactions={transactions} />
         </div>
         <div className="chart-card">
-          <div className="chart-wrapper">
-            <ChartWithCrosshair />
-          </div>
+          <ChartWithCrosshair />
         </div>
       </div>
     </div>
   );
 }
 
-export default DashboardPage;
+export default ChildDashboardPage;

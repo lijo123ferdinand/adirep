@@ -1,0 +1,21 @@
+.container {
+    background-color: #f8f9fa;
+  }
+  
+  .card-light-green {
+    background-color: #e6ffe6;
+  }
+  
+  .card-light-red {
+    background-color: #fff5f5;
+  }
+  
+  .card {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+  

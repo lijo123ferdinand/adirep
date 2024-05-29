@@ -1,37 +1,23 @@
-/* ChartContainer.css */
-
 .chart-card-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
-}
-
-.chart-card {
-    border-radius: 10px;
-    overflow: hidden;
-    background: linear-gradient(135deg, #f8fafc, #e9ecef);
-    border: none;
-}
-
-.card-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #007bff;
-}
-
-.card-text {
-    font-size: 1rem;
-    color: #6c757d;
-    margin-bottom: 1.5rem;
-}
-
-.chart-container {
-    position: relative;
-    height: 400px;
+    width: 400px; /* Set the width of the container */
+    height: 400px; /* Set the height of the container to make it square */
+    margin-bottom: 20px;
+  }
+  
+  .chart-card {
     width: 100%;
-}
-
-.shadow-sm {
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
-}
+    height: 100%;
+    border-radius: 10px;
+    overflow: hidden; /* Ensure the chart doesn't overflow the container */
+  }
+  
+  .chart-container {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .canvas-container {
+    width: 100%;
+    height: 100%;
+  }
+  

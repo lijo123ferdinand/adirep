@@ -12,6 +12,11 @@ import AdminAnalyticsPage from './pages/AdminAnalyticsPage';
 import ParentPage from './pages/ParentPage'; // Correct import
 import SetBudgetPage from './pages/SetBudgetPage';
 import ManageKidsPage from './pages/ManageKidsPage';
+import AddExpenseAndSalaryPage from './pages/AddExpenseAndSalaryPage';
+import AddExpense from './components/AddExpense';
+import AddSalary from './components/AddSalary';
+import ChartWithCrosshair from './components/ChartWithCrosshair';
+import ChildDashboardPage from './pages/ChildDashboardPage';
 function App() {
   return (
     <Router> {/* Wrap the entire App component with the Router component */}
@@ -45,6 +50,13 @@ function AppContent() {
         <Route exact path="/parent" element={<ParentPage />} />
         <Route exact path="/setbud" element={<SetBudgetPage />} />
         <Route exact path="/managekids" element={<ManageKidsPage />} />
+        <Route exact path="/addexp" element={<AddExpense />} />
+        <Route exact path="/addsalary" element={<AddSalary />} />
+        <Route exact path="/expense-over-time" element={<ChartWithCrosshair />} />
+        <Route exact path="/child" element={<ChildDashboardPage />} />
+
+
+
 
 
 

@@ -1,62 +1,31 @@
-.card-container {
+.dashboard-container {
+  display: flex;
+  justify-content: space-between;
   padding: 20px;
-  background-image: url('./../styles/Default.png'); /* Path to your image */
-  background-size: cover;
-  background-position: center;
-  background-size:130%;
-}
-/* DashboardPage.css */
-
-.bg-light-blue {
-  background-color: #f0f8ff;
 }
 
-.card-light-blue {
-  background-color: #e6f7ff;
+.left-panel {
+  flex: 1;
+  padding-right: 20px;
 }
 
-.card-light-orange {
-  background-color: #fff3e6;
+.right-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-.card-light-green {
-  background-color: #e6ffe6;
+.chart-card {
+  margin-bottom: 20px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  width:100%;
+  
 }
 
-.card-light-red {
-  background-color: #fff5f5;
-}
-
-.card-light-purple {
-  background-color: #f2e6ff;
-}
-
-.card {
-  border-width: 2px;
-}
-
-.card .card-body {
-  padding: 1.5rem;
-}
-
-.card-title {
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: #007bff;
-}
-
-.table {
-  margin-bottom: 0;
-}
-
-.table th, .table td {
-  vertical-align: middle;
-}
-
-.text-primary {
-  color: #007bff !important;
-}
-
-.shadow-lg {
-  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+.chart-card canvas {
+  width: 30%;
+  height: 30%;
+  border-radius: 10px;
 }
