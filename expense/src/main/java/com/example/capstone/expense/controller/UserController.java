@@ -31,6 +31,7 @@ import com.example.capstone.expense.repository.UserRepository;
 import com.example.capstone.expense.security.JwtSecretKeyGenerator;
 import com.example.capstone.expense.security.PasswordHashing;
 
+import io.jsonwebtoken.Claims;
 // import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -75,11 +76,6 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody User loginUser) {
-        // Admin Login
-        // if ("admin@email.com".equals(loginUser.getEmail()) && "admin".equals(loginUser.getPassword())) {
-        //     return ResponseEntity.ok("Admin login successful");
-        // }
-    
         // Find the user by email
         User existingUser = userRepository.findByEmail(loginUser.getEmail());
         if (existingUser == null) {
@@ -91,19 +87,24 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
         }
 
-        // Generate JWT token
-        String token = generateJwtToken(existingUser.getEmail());
+        // Generate JWT token with user details
+        String token = generateJwtToken(existingUser);
 
         // Authentication successful
         return ResponseEntity.ok().body(token);
     }
 
-    // Generate JWT token
-    @SuppressWarnings("deprecation")
-    private String generateJwtToken(String userEmail) {
+    // Generate JWT token with user details
+    private String generateJwtToken(User user) {
         String secretKey = JwtSecretKeyGenerator.generateSecretKey();
+        
+        Claims claims = Jwts.claims().setSubject(user.getEmail());
+        claims.put("username", user.getUsername());
+        claims.put("usertype", user.getUsertype());
+        claims.put("id", user.getId());
+
         String token = Jwts.builder()
-            .setSubject(userEmail)
+            .setClaims(claims)
             .signWith(SignatureAlgorithm.HS256, secretKey)
             .compact();
         System.out.println("GENERATED JWT TOKEN: " + token); 

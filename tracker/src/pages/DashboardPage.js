@@ -3,10 +3,16 @@ import UserProfile from '../components/UserProfile';
 import ChartContainer from '../components/ChartContainer';
 import ChartWithCrosshair from '../components/ChartWithCrosshair';
 import '../styles/DashboardPage.css';
+import { useNavigate } from 'react-router-dom';
+import AddExpenseModal from '../pages/AddExpenseModal';
+import { Button } from 'react-bootstrap';
 
 function DashboardPage() {
   const [userEmail, setUserEmail] = useState('');
   const [transactions, setTransactions] = useState([]);
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+
 
   const updateTransactions = (updatedTransactions) => {
     setTransactions(updatedTransactions);
@@ -20,6 +26,12 @@ function DashboardPage() {
       console.log('User Not Found');
     }
   }, []);
+  const handleAddExpense = () => {
+    navigate('/dashboard'); // Adjust the path to match your routing
+  };
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
 
   return (
     <div className="dashboard-container">
@@ -38,6 +50,26 @@ function DashboardPage() {
           </div>
         </div>
       </div>
+      <Button
+        className="floating-button"
+        onClick={handleShowModal}
+        style={{
+          position: 'fixed',
+          bottom: '30px',
+          right: '30px',
+          borderRadius: '50%',
+          width: '60px',
+          height: '60px',
+          fontSize: '24px',
+        }}
+      >
+        +
+      </Button>
+      <AddExpenseModal
+        show={showModal}
+        handleClose={handleCloseModal}
+                handleSave={handleAddExpense}
+      />
     </div>
   );
 }

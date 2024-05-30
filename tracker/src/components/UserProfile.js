@@ -38,11 +38,11 @@ function UserProfile({ updateTransactions }) {
             setTransactions(response.data.expenses.reverse() || []);
 
             // Redirect if user type is 'child'
-            if (response.data.usertype === 'child') {
-                setTimeout(() => {
-                    navigate('/child');
-                }, 500); // Redirect after 3 seconds
-            }
+            // if (response.data.usertype === 'child') {
+            //     setTimeout(() => {
+            //         navigate('/child');
+            //     }, 500); // Redirect after 3 seconds
+            // }
         } catch (error) {
             console.error('Error fetching user profile:', error);
         }

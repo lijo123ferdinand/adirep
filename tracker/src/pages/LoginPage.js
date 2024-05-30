@@ -1,15 +1,15 @@
-import React, { useState ,useEffect} from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from '../services/axiosInstance';
 import Swal from 'sweetalert2';
-// import "../styles/LoginPage.css"
+import {jwtDecode} from 'jwt-decode';  // Import jwt-decode
 
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate(); 
+
   useEffect(() => {
     document.body.classList.add('signup-page');
     return () => {
@@ -33,23 +33,30 @@ function LoginPage() {
         const token = response.data;
         console.log("Token: ", token);
         localStorage.setItem('token', token);
-        if (email === 'admin@email.com') {
+
+        // Decode the token and log the fields
+        const decodedToken = jwtDecode(token);
+        console.log('Decoded Token:', decodedToken);
+
+        // Navigate based on user type
+        const userType = decodedToken.usertype;
+        if (userType === 'admin') {
           navigate('/admin');
+        } else if (userType === 'child') {
+          navigate('/child');
         } else {
           navigate('/dashboard');
         }
       } else {
         console.error('Login failed:', response.data);
-        // Handle 401 for unauthorized
         Swal.fire({
           icon: 'error',
           title: 'Login failed',
           text: 'Please check your credentials and try again.',
         });
       }
-    } catch(error) {
+    } catch (error) {
       console.error('Error:', error);
-      // Handle network errors or other unexpected errors
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -64,7 +71,7 @@ function LoginPage() {
         <div className="card-body">
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="email" className="form-label"style={{ color: 'white' }}>Email:</label>
+              <label htmlFor="email" className="form-label" style={{ color: 'white' }}>Email:</label>
               <input
                 type="email"
                 id="email"
@@ -76,7 +83,7 @@ function LoginPage() {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="password" className="form-label"style={{ color: 'white' }}>Password:</label>
+              <label htmlFor="password" className="form-label" style={{ color: 'white' }}>Password:</label>
               <input
                 type="password"
                 id="password"
@@ -92,11 +99,10 @@ function LoginPage() {
         </div>
         <div className="row justify-content-left mt-3">
           <div className="col-lg-6">
-            <p className="mb-0 text-center"style={{ color: 'white' }}>New user? <Link to="/signup">Signup</Link></p>
+            <p className="mb-0 text-center" style={{ color: 'white' }}>New user? <Link to="/signup">Signup</Link></p>
           </div>
         </div> 
       </div>   
-      {/* {email !== 'admin@email.com' && <Navbar />} Render Navbar only if user is not admin */}
     </div>  
   );
 }

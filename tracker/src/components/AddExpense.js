@@ -37,6 +37,10 @@ function AddExpense() {
   
   return (
     <div className="container border p-4 shadow-lg mt-5">
+      <div className="quote mb-4">
+        <p className="fs-5 text-center">"Every penny saved is a penny earned."</p>
+        <p className="text-center">- Benjamin Franklin</p>
+      </div>
       <h2 className="fw-bold">Add Expense</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
