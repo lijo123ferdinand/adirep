@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.sql.Date;
 import java.util.Collection;
 import java.util.Collections;
@@ -152,7 +153,7 @@ public class ExpenseController {
         newExpense.setUser(user);
         newExpense.setCategory(expenseRequest.getCategory());
         newExpense.setAmount(expenseRequest.getAmount());
-        newExpense.setExpenseDate(Date.valueOf(LocalDate.now()));
+newExpense.setExpenseDate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
     
         expenseRepository.save(newExpense);
         userRepository.save(user);

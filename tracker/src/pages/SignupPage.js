@@ -40,6 +40,7 @@ function SignupPage() {
 
   return (
     <div className="row justify-content-center">
+      
       <div className="col-md-8 col-lg-6 col-xl-4">
         <form onSubmit={handleSubmit} className="card p-4 shadow" style={{ width: '100%', marginTop: '10vh' }}>
           <div className="mb-3">
