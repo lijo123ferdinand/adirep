@@ -2,6 +2,7 @@ package com.example.capstone.expense.controller;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.sql.Date;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -80,14 +82,33 @@ public class ExpenseController {
         return expenseRepository.findByUserAndExpenseDate(user, expense_date);
     }
 
-    // Retrieve user's expenses by DateRange 
+
     @GetMapping("/user/expensesByDateRange")
-    Collection<Expense> getExpensesByDateRange(
+    public Collection<Expense> getExpensesByDateRange(
             @RequestParam String email,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
-        return expenseRepository.findByUserEmailAndExpenseDateBetween(email, startDate, endDate);
+            @RequestParam String startDate,
+            @RequestParam String endDate) {
+    
+        // Define the date format expected
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+    
+        // Parse the date strings to LocalDateTime
+        LocalDateTime startLocalDateTime = LocalDateTime.parse(startDate.trim(), formatter);
+        LocalDateTime endLocalDateTime = LocalDateTime.parse(endDate.trim(), formatter);
+    
+        // Convert LocalDateTime to Instant
+        Instant startInstant = startLocalDateTime.atZone(ZoneId.systemDefault()).toInstant();
+        Instant endInstant = endLocalDateTime.atZone(ZoneId.systemDefault()).toInstant();
+    
+        // Convert Instant to java.sql.Date
+        Date startDateAsSqlDate = Date.valueOf(startLocalDateTime.toLocalDate());
+        Date endDateAsSqlDate = Date.valueOf(endLocalDateTime.toLocalDate());
+    
+        return expenseRepository.findByUserEmailAndExpenseDateBetween(email, startDateAsSqlDate, endDateAsSqlDate);
     }
+    
+    
+    
 
     //Retrieve a user's expenses by category
     @GetMapping("/user/expensesByCategory")
@@ -153,8 +174,7 @@ public class ExpenseController {
         newExpense.setUser(user);
         newExpense.setCategory(expenseRequest.getCategory());
         newExpense.setAmount(expenseRequest.getAmount());
-        newExpense.setExpenseDate(Date.valueOf(LocalDate.now()));
-    
+        newExpense.setExpenseDate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));    
         expenseRepository.save(newExpense);
         userRepository.save(user);
     

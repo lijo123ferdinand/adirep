@@ -4,6 +4,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.time.Instant;
+import java.sql.Date;
+
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.capstone.expense.model.Expense;
 import com.example.capstone.expense.model.User;
@@ -17,6 +21,9 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     Collection<Expense> findByExpenseDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
     Collection<Expense> findByExpenseDate(LocalDateTime expense_date);
+    Collection<Expense> findByUserEmailAndExpenseDateBetween(String email, Instant startDate, Instant endDate);
+    Collection<Expense> findByUserEmailAndExpenseDateBetween(String email, Date startDate, Date endDate);
+
 
     Collection<Expense> findByUserAndExpenseDate(User user, LocalDateTime expense_date);
 

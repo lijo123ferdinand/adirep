@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';  // Correct import for jwt-decode
 
 const ChartWithCrosshair = () => {
   const [chartType, setChartType] = useState('line');
@@ -37,7 +37,6 @@ const ChartWithCrosshair = () => {
 
   const handleChartTypeChange = (e) => {
     setChartType(e.target.value);
-    
   };
 
   const fetchData = async () => {
@@ -59,6 +58,7 @@ const ChartWithCrosshair = () => {
       setChartOptions(prevOptions => ({
         ...prevOptions,
         xaxis: {
+          type: 'datetime',
           categories: dates
         }
       }));
@@ -66,7 +66,10 @@ const ChartWithCrosshair = () => {
       setChartSeries([
         {
           name: 'Amount Spent',
-          data: amounts
+          data: expenses.map(expense => ({
+            x: new Date(expense.expenseDate).getTime(),
+            y: expense.amount
+          }))
         }
       ]);
 
@@ -107,18 +110,6 @@ const ChartWithCrosshair = () => {
       }));
     }
   }, [chartType]);
-
-  useEffect(() => {
-    if (!loading) {
-      // Update chart options when loading state changes
-      setChartOptions(prevOptions => ({
-        ...prevOptions,
-        xaxis: {
-          categories: chartSeries[0].data.map((_, index) => index)
-        }
-      }));
-    }
-  }, [loading, chartSeries]);
 
   // Render loading state if data is being fetched
   if (loading) {
