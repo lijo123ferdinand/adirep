@@ -67,8 +67,7 @@ function NavBar({ userType }) {
                     </Link>
                   </li>
                   <li>
-                    
-                    <DeleteUserAccount className="me-2" />
+                      <DeleteUserAccount /> {/* Render DeleteUserAccount component */}
                   </li>
                 </ul>
               </li>
